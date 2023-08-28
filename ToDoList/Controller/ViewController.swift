@@ -16,6 +16,15 @@ class ViewController: UIViewController {
         fetchImageURL()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(false)
+        fetchImageURL()
+    }
+    
+    @IBAction func refreshButtonPressed(_ sender: UIButton) {
+        fetchImageURL()
+    }
+    
     func fetchImageURL() {
         let urlAddress = "https://api.thecatapi.com/v1/images/search"
         if let url = URL(string: urlAddress) {

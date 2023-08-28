@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lHs-Bb-XtH">
-                                <rect key="frame" x="123.33333333333333" y="513" width="146.33333333333337" height="50"/>
+                                <rect key="frame" x="123.33333333333333" y="523" width="146.33333333333337" height="50"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Done List">
@@ -28,7 +28,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NpK-Rs-ZsD">
-                                <rect key="frame" x="124.33333333333333" y="413" width="144.33333333333337" height="50"/>
+                                <rect key="frame" x="124.33333333333333" y="443" width="144.33333333333337" height="50"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="ToDo List">
@@ -38,22 +38,33 @@
                                     <segue destination="7JF-Zr-KgS" kind="show" id="DVo-KU-3ky"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Yw5-iF-xOr">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="스크린샷 2023-08-28 오후 6.08.43" translatesAutoresizingMaskIntoConstraints="NO" id="Yw5-iF-xOr">
                                 <rect key="frame" x="71.666666666666686" y="153" width="250" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="Oji-yg-qFh"/>
                                     <constraint firstAttribute="width" constant="250" id="aW9-Qo-IWQ"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="51O-2y-tUt">
+                                <rect key="frame" x="173" y="393" width="47" height="35"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="🐈"/>
+                                <connections>
+                                    <action selector="refreshButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Wxv-8a-bqb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Yw5-iF-xOr" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7nB-Bc-Xt4"/>
-                            <constraint firstItem="lHs-Bb-XtH" firstAttribute="top" secondItem="NpK-Rs-ZsD" secondAttribute="bottom" constant="50" id="9hG-5u-gst"/>
+                            <constraint firstItem="lHs-Bb-XtH" firstAttribute="top" secondItem="NpK-Rs-ZsD" secondAttribute="bottom" constant="30" id="9hG-5u-gst"/>
+                            <constraint firstItem="51O-2y-tUt" firstAttribute="top" secondItem="Yw5-iF-xOr" secondAttribute="bottom" constant="40" id="AHo-jw-eaR"/>
+                            <constraint firstItem="51O-2y-tUt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BvT-Rr-WHA"/>
                             <constraint firstItem="lHs-Bb-XtH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dA8-Fk-6yV"/>
                             <constraint firstItem="Yw5-iF-xOr" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="fUH-4x-PMA"/>
-                            <constraint firstItem="NpK-Rs-ZsD" firstAttribute="top" secondItem="Yw5-iF-xOr" secondAttribute="bottom" constant="60" id="uie-lB-gDP"/>
+                            <constraint firstItem="NpK-Rs-ZsD" firstAttribute="top" secondItem="Yw5-iF-xOr" secondAttribute="bottom" constant="90" id="uie-lB-gDP"/>
                             <constraint firstItem="NpK-Rs-ZsD" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yZd-AH-pUT"/>
                         </constraints>
                     </view>
@@ -228,6 +239,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="스크린샷 2023-08-28 오후 6.08.43" width="724" height="714"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
