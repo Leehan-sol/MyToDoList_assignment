@@ -13,7 +13,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchImageURL()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -21,9 +20,11 @@ class ViewController: UIViewController {
         fetchImageURL()
     }
     
+    
     @IBAction func refreshButtonPressed(_ sender: UIButton) {
         fetchImageURL()
     }
+    
     
     func fetchImageURL() {
         let urlAddress = "https://api.thecatapi.com/v1/images/search"
@@ -46,21 +47,21 @@ class ViewController: UIViewController {
         }
     }
     
-    
     func parseJSON(_ parseData: Data) -> UIImage? {
         let decoder = JSONDecoder()
         do {
-            let decodedData = try decoder.decode([CatImage].self, from: parseData)
-                if let firstImage = decodedData.first,
-                   let imageURL = URL(string: firstImage.url),
-                   let imageData = try? Data(contentsOf: imageURL),
-                   let image = UIImage(data: imageData) {
-                    return image
-                }
-            } catch {
-                print(error)
+            let decodedData = try decoder.decode([ImageData].self, from: parseData)
+            if let firstImage = decodedData.first,
+               let imageURL = URL(string: firstImage.url),
+               let imageData = try? Data(contentsOf: imageURL),
+               let image = UIImage(data: imageData) {
+                return image
             }
-            return nil
+        } catch {
+            print(error)
         }
+        return nil
+    }
+    
     
 }

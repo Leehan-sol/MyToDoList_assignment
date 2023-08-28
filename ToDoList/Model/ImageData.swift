@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CatImage: Codable {
+struct ImageData: Codable {
     let url: String
     let width: Int
     let height: Int
