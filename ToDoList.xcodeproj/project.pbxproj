@@ -79,10 +79,10 @@
 		6735C7792A9B096C0054FF2B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				6735C7752A9B094D0054FF2B /* ToDoViewController.swift */,
-				6735C7732A9B09200054FF2B /* ToDoTableViewCell.swift */,
-				6735C7772A9B095D0054FF2B /* DoneViewController.swift */,
 				6735C7632A9B05E50054FF2B /* ViewController.swift */,
+				6735C7752A9B094D0054FF2B /* ToDoViewController.swift */,
+				6735C7772A9B095D0054FF2B /* DoneViewController.swift */,
+				6735C7732A9B09200054FF2B /* ToDoTableViewCell.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
