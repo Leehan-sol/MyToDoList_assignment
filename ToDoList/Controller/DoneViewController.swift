@@ -13,7 +13,9 @@ class DoneViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        doneTableView.delegate = self
+        doneTableView.dataSource = self
     
     }
 
@@ -33,33 +35,16 @@ extension DoneViewController: UITableViewDelegate{
 
 // MARK: -UITableViewDataSource
 extension DoneViewController: UITableViewDataSource {
-    // 섹션 개수
-    func numberOfSections(in tableView: UITableView) -> Int {
-        sections.count
-    }
-    
-    // 섹션의 헤더 내용
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
-    }
-    
-    // 섹션마다 Row개수
+    // Row개수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0{
-            return studyFinishList.count
-        }
-        return dailyFinishList.count
+        return doneList.count
     }
     
     // Row 내용
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoCell", for: indexPath) as! ToDoTableViewCell
-        if indexPath.section == 0 {
-            cell.todoLabel.text = studyFinishList[indexPath.row].title
-        } else {
-            cell.todoLabel.text = dailyFinishList[indexPath.row].title
-        }
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DoneCell", for: indexPath) as! DoneTableViewCell
+        cell.doneLabel.text = doneList[indexPath.row].title
+        cell.doneSwitch.isOn = doneList[indexPath.row].done
         return cell
     }
     
@@ -67,3 +52,4 @@ extension DoneViewController: UITableViewDataSource {
     
 }
     
+

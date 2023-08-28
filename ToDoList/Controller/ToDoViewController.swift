@@ -10,6 +10,7 @@ import UIKit
 class ToDoViewController: UIViewController {
     
     @IBOutlet weak var todoTableView: UITableView!
+    
     var selectedSection: Int = 0
     let pickerFrame = UIPickerView(frame: CGRect(x: 5, y: 20, width: 250, height: 140))
     
@@ -102,7 +103,27 @@ class ToDoViewController: UIViewController {
         present(mainAlert, animated: true)
     }
     
+    
+    // Switch OnOff시 Action
+    @IBAction func switchOnOff(_ sender: UISwitch) {
+        if let cell = sender.superview?.superview as? ToDoTableViewCell, let indexPath = todoTableView.indexPath(for: cell) {
+            let item = list[indexPath.section][indexPath.row]
+            let newItem = List(title: item.title, done: sender.isOn)
+            if newItem.done == true {
+                doneList.append(newItem)
+                print("doneList: \(doneList)")
+            } else {
+                doneList.removeAll {$0.title == newItem.title}
+                print("remove: \(doneList)")
+            }
+            // 스위치 상태 저장
+            let switchKey = "SwitchState \(indexPath.section) \(indexPath.row)"
+            UserDefaults.standard.set(sender.isOn, forKey: switchKey)
+        }
+    }
+    
 }
+
 
 
 
@@ -137,11 +158,18 @@ extension ToDoViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoCell", for: indexPath) as! ToDoTableViewCell
         cell.todoLabel.text = list[indexPath.section][indexPath.row].title
+        cell.todoSwitch.isOn = list[indexPath.section][indexPath.row].done
+        
+        // 스위치 상태 불러옴
+        let switchKey = "SwitchState \(indexPath.section) \(indexPath.row)"
+        let switchState = UserDefaults.standard.bool(forKey: switchKey)
+        cell.todoSwitch.isOn = switchState
+        
         return cell
+        
     }
     
 }
-
 
 // MARK: -UIPickerViewDelegate, UIPickerViewDataSource
 extension ToDoViewController: UIPickerViewDelegate, UIPickerViewDataSource {

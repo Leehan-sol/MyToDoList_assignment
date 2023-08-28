@@ -15,12 +15,9 @@ struct List {
 var sections = ["Study", "Daily"]
 
 var list = [studyList, dailyList]
-
 var studyList = [List(title: "공부하기", done: false),
-                 List(title: "강의보기", done: false)]
-
+                         List(title: "강의보기", done: false)]
 var dailyList = [List(title: "장보기", done: false),
-                 List(title: "운동하기", done: false)]
+                         List(title: "운동하기", done: false)]
 
-var studyFinishList = [List]()
-var dailyFinishList = [List]()
+var doneList = [List]()
