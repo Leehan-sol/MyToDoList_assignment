@@ -38,7 +38,7 @@
                                     <segue destination="7JF-Zr-KgS" kind="show" id="DVo-KU-3ky"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Yw5-iF-xOr">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Yw5-iF-xOr">
                                 <rect key="frame" x="71.666666666666686" y="153" width="250" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="Oji-yg-qFh"/>
@@ -58,6 +58,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="xg6-qQ-HzR"/>
+                    <connections>
+                        <outlet property="imageView" destination="Yw5-iF-xOr" id="2QF-dH-G7a"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
