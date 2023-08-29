@@ -127,8 +127,7 @@ class ToDoViewController: UIViewController {
             setDoneList(doneList)
             
             // 스위치 상태 저장
-            let switchKey = "SwitchState \(indexPath.section) \(indexPath.row)"
-            saveData.set(sender.isOn, forKey: switchKey)
+            setSwitch(sender: cell.todoSwitch, indexPath: indexPath)
         }
     }
     
@@ -156,11 +155,15 @@ class ToDoViewController: UIViewController {
         }
     }
     
+    func setSwitch(sender: UISwitch, indexPath: IndexPath){
+        let switchKey = "SwitchState \(indexPath.section) \(indexPath.row)"
+        saveData.set(sender.isOn, forKey: switchKey)
+    }
+    
     func findList() {
         if let data = saveData.data(forKey: "ToDoList") {
             if let decodedList = try? PropertyListDecoder().decode([[List]].self, from: data) {
                 list = decodedList
-                print("findList : \(list)")
             }
         }
     }
@@ -169,7 +172,6 @@ class ToDoViewController: UIViewController {
         if let data = saveData.data(forKey: "DoneList") {
             if let decodedList = try? PropertyListDecoder().decode([List].self, from: data) {
                 doneList = decodedList
-                print("findDoneList: \(doneList)")
             }
         }
     }
@@ -178,9 +180,14 @@ class ToDoViewController: UIViewController {
         if let data = saveData.data(forKey: "Sections") {
             if let decodedSections = try? PropertyListDecoder().decode([String].self, from: data) {
                 sections = decodedSections
-                print("findSections : \(sections)")
             }
         }
+    }
+    
+    func findSwitch(_ switchControl: UISwitch, indexPath: IndexPath) {
+        let switchKey = "SwitchState \(indexPath.section) \(indexPath.row)"
+        let switchState = saveData.bool(forKey: switchKey)
+        switchControl.isOn = switchState
     }
     
 }
@@ -198,10 +205,15 @@ extension ToDoViewController: UITableViewDelegate{
         if editingStyle == .delete {
             list[indexPath.section].remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            setList(list)
+        }
+        if list[indexPath.section].isEmpty {
+            sections.remove(at: indexPath.section)
+            setSection(sections)
+            todoTableView.reloadData()
         }
     }
 }
-
 
 // MARK: -UITableViewDataSource
 extension ToDoViewController: UITableViewDataSource {
@@ -226,12 +238,8 @@ extension ToDoViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoCell", for: indexPath) as! ToDoTableViewCell
         cell.todoLabel.text = list[indexPath.section][indexPath.row].title
         cell.todoSwitch.isOn = list[indexPath.section][indexPath.row].done
-        
-        // 스위치 상태 불러옴
-        let switchKey = "SwitchState \(indexPath.section) \(indexPath.row)"
-        let switchState = UserDefaults.standard.bool(forKey: switchKey)
-        cell.todoSwitch.isOn = switchState
-        
+        findSwitch(cell.todoSwitch, indexPath: indexPath)
+
         return cell
     }
     

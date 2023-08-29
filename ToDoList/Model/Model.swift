@@ -10,6 +10,7 @@ import Foundation
 struct List: Codable {
     var title : String
     var done : Bool
+
 }
 
 var studyList = [List(title: "공부하기", done: false),
@@ -22,3 +23,4 @@ var list = [studyList, dailyList]
 var doneList = [List]()
 
 var sections = ["Study", "Daily"]
+

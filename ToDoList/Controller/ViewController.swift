@@ -20,11 +20,9 @@ class ViewController: UIViewController {
         fetchImageURL()
     }
     
-    
     @IBAction func refreshButtonPressed(_ sender: UIButton) {
         fetchImageURL()
     }
-    
     
     func fetchImageURL() {
         let urlAddress = "https://api.thecatapi.com/v1/images/search"
@@ -62,6 +60,5 @@ class ViewController: UIViewController {
         }
         return nil
     }
-    
     
 }
