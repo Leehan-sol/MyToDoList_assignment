@@ -11,17 +11,24 @@ class ToDoViewController: UIViewController {
     @IBOutlet weak var todoTableView: UITableView!
     var selectedSection: Int = 0
     let pickerFrame = UIPickerView(frame: CGRect(x: 5, y: 20, width: 250, height: 140))
+    let saveData = UserDefaults.standard // 수정하기
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         todoTableView.delegate = self
         todoTableView.dataSource = self
         pickerFrame.delegate = self
         pickerFrame.dataSource = self
     }
     
-    // addButton 클릭시 Section 선택
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(false)
+        findList()
+        findDoneList()
+        findSection()
+    }
+    
+    //MARK: -addButton Alert
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         
@@ -35,10 +42,8 @@ class ToDoViewController: UIViewController {
         
         // 3) Add Action
         let addAction = UIAlertAction(title: "Add", style: .default) { action in
-            
             // 3-1) Section Alert
             let sectionAlert = UIAlertController(title: "Add New Section", message: "", preferredStyle: .alert)
-            
             // 3-2) Section Alert에 TextField 추가
             sectionAlert.addTextField { alertTextField in
                 alertTextField.placeholder = "Write here"
@@ -51,6 +56,9 @@ class ToDoViewController: UIViewController {
                     let newEmptyList: [List] = []
                     sections.append(sectionName)
                     list.append(newEmptyList)
+                    
+                    self.setSection(sections)
+                    self.setList(list)
                     self.pickerFrame.reloadAllComponents()
                 }
             }
@@ -83,6 +91,9 @@ class ToDoViewController: UIViewController {
         let mainAddAction = UIAlertAction(title: "Add", style: .default) { action in
             let newItem = List(title: textField.text!, done: false)
             list[self.selectedSection].append(newItem)
+            
+            self.setList(list)
+            
             self.todoTableView.reloadData()
         }
         
@@ -107,22 +118,72 @@ class ToDoViewController: UIViewController {
         if let cell = sender.superview?.superview as? ToDoTableViewCell, let indexPath = todoTableView.indexPath(for: cell) {
             let item = list[indexPath.section][indexPath.row]
             let newItem = List(title: item.title, done: sender.isOn)
+            
             if newItem.done == true {
                 doneList.append(newItem)
-                print("doneList: \(doneList)")
             } else {
                 doneList.removeAll {$0.title == newItem.title}
-                print("remove: \(doneList)")
             }
+            setDoneList(doneList)
+            
             // 스위치 상태 저장
             let switchKey = "SwitchState \(indexPath.section) \(indexPath.row)"
-            UserDefaults.standard.set(sender.isOn, forKey: switchKey)
+            saveData.set(sender.isOn, forKey: switchKey)
+        }
+    }
+    
+    
+    // MARK: -userDefaults, 프로퍼티 리스트 타입으로 저장
+    // PropertyListEncoder().encode()를 이용해서 바이너리 프로퍼티 리스트 형태로 인코딩하여 저장
+    func setList(_ list: [[List]]){
+        DispatchQueue.global().async {
+            let propertyListEncoder = try? PropertyListEncoder().encode(list)
+            self.saveData.set(propertyListEncoder, forKey: "ToDoList")
+        }
+    }
+    
+    func setDoneList(_ doneList: [List]){
+        DispatchQueue.global().async {
+            let propertyListEncoder = try? PropertyListEncoder().encode(doneList)
+            self.saveData.set(propertyListEncoder, forKey: "DoneList")
+        }
+    }
+    
+    func setSection(_ sections: [String]){
+        DispatchQueue.global().async {
+            let propertyListEncoder = try? PropertyListEncoder().encode(sections)
+            self.saveData.set(propertyListEncoder, forKey: "Sections")
+        }
+    }
+    
+    func findList() {
+        if let data = saveData.data(forKey: "ToDoList") {
+            if let decodedList = try? PropertyListDecoder().decode([[List]].self, from: data) {
+                list = decodedList
+                print("findList : \(list)")
+            }
+        }
+    }
+    
+    func findDoneList() {
+        if let data = saveData.data(forKey: "DoneList") {
+            if let decodedList = try? PropertyListDecoder().decode([List].self, from: data) {
+                doneList = decodedList
+                print("findDoneList: \(doneList)")
+            }
+        }
+    }
+    
+    func findSection() {
+        if let data = saveData.data(forKey: "Sections") {
+            if let decodedSections = try? PropertyListDecoder().decode([String].self, from: data) {
+                sections = decodedSections
+                print("findSections : \(sections)")
+            }
         }
     }
     
 }
-
-
 
 
 // MARK: -UITableViewDelegate
@@ -136,16 +197,15 @@ extension ToDoViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             list[indexPath.section].remove(at: indexPath.row)
-            print(list)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-    
 }
 
 
 // MARK: -UITableViewDataSource
 extension ToDoViewController: UITableViewDataSource {
+    
     // 섹션 개수
     func numberOfSections(in tableView: UITableView) -> Int {
         sections.count
