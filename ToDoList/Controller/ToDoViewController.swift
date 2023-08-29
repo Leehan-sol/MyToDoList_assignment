@@ -132,6 +132,15 @@ extension ToDoViewController: UITableViewDelegate{
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    // 테이블뷰 삭제기능
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            list[indexPath.section].remove(at: indexPath.row)
+            print(list)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
 }
 
 
@@ -164,8 +173,8 @@ extension ToDoViewController: UITableViewDataSource {
         cell.todoSwitch.isOn = switchState
         
         return cell
-        
     }
+    
     
 }
 
