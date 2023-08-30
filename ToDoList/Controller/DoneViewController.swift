@@ -10,11 +10,14 @@ import UIKit
 class DoneViewController: UIViewController {
 
     @IBOutlet weak var doneTableView: UITableView!
+    var f = F()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         doneTableView.delegate = self
         doneTableView.dataSource = self
+        
+        f.findDoneList()
     }
 }
 

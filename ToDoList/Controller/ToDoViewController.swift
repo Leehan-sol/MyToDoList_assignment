@@ -10,18 +10,21 @@ import UIKit
 class ToDoViewController: UIViewController {
     @IBOutlet weak var todoTableView: UITableView!
     let pickerFrame = UIPickerView(frame: CGRect(x: 5, y: 20, width: 250, height: 140))
-    let saveData = UserDefaults.standard
     var selectedSection = 0
+    var f = F()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         todoTableView.delegate = self
         todoTableView.dataSource = self
         pickerFrame.delegate = self
         pickerFrame.dataSource = self
-        findList()
-        findDoneList()
-        findSection()
+        
+        f.findList()
+        f.findDoneList()
+        f.findSection()
+        
     }
     
     
@@ -54,8 +57,8 @@ class ToDoViewController: UIViewController {
                     sections.append(sectionName)
                     list.append(emptyList)
                     
-                    self.setSection(sections)
-                    self.setList(list)
+                    self.f.setSection(sections)
+                    self.f.setList(list)
                     self.todoTableView.reloadData()
                     self.pickerFrame.reloadAllComponents()
                 }
@@ -92,7 +95,7 @@ class ToDoViewController: UIViewController {
                 list[self.selectedSection].append(newItem)
                 
                 print(sections, list)
-                self.setList(list)
+                self.f.setList(list)
                 self.todoTableView.reloadData()
             }
         }
@@ -118,11 +121,18 @@ class ToDoViewController: UIViewController {
             let item = list[indexPath.section][indexPath.row]
             let newItem = List(title: item.title, done: sender.isOn)
             
-            newItem.done ? doneList.append(newItem) : doneList.removeAll { $0.title == newItem.title }
-            setDoneList(doneList)
+            if sender.isOn {
+                      doneList.append(newItem)
+                  } else {
+                      if let indexToRemove = doneList.firstIndex(where: { $0.title == newItem.title }) {
+                          doneList.remove(at: indexToRemove)
+                      }
+                  }
+            
+            f.setDoneList(doneList)
             
             // 스위치 상태 저장
-            setSwitch(sender: cell.todoSwitch, indexPath: indexPath)
+            f.setSwitch(sender: cell.todoSwitch, indexPath: indexPath)
         }
     }
     
@@ -145,18 +155,17 @@ extension ToDoViewController: UITableViewDelegate{
             }
             tableView.deleteRows(at: [indexPath], with: .fade)
             
-            setList(list)
-            setDoneList(doneList)
-            setSection(sections)
+            f.setList(list)
+            f.setDoneList(doneList)
+            f.setSection(sections)
         }
         
         if list[indexPath.section].isEmpty {
             sections.remove(at: indexPath.section)
             list.remove(at: indexPath.section)
             
-            setSection(sections)
-            setList(list)
-            print(sections, list)
+            f.setSection(sections)
+            f.setList(list)
             
             pickerFrame.reloadAllComponents()
             todoTableView.reloadData()
@@ -192,7 +201,7 @@ extension ToDoViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoCell", for: indexPath) as! ToDoTableViewCell
         cell.todoLabel.text = list[indexPath.section][indexPath.row].title
         cell.todoSwitch.isOn = list[indexPath.section][indexPath.row].done
-        findSwitch(cell.todoSwitch, indexPath: indexPath)
+        f.findSwitch(cell.todoSwitch, indexPath: indexPath)
         
         return cell
     }
@@ -220,67 +229,3 @@ extension ToDoViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
 }
 
-
-// MARK: -userDefaults
-extension ToDoViewController {
-    // PropertyListEncoder().encode()를 이용해서 바이너리 프로퍼티 리스트 형태로 인코딩하여 저장
-    func setList(_ list: [[List]]){
-        DispatchQueue.global().async {
-            let propertyListEncoder = try? PropertyListEncoder().encode(list)
-            self.saveData.set(propertyListEncoder, forKey: "ToDoList")
-            //            DispatchQueue.main.async {
-            //                self.todoTableView.reloadData()
-            //            }
-        }
-    }
-    
-    func setDoneList(_ doneList: [List]){
-        DispatchQueue.global().async {
-            let propertyListEncoder = try? PropertyListEncoder().encode(doneList)
-            self.saveData.set(propertyListEncoder, forKey: "DoneList")
-        }
-    }
-    
-    func setSection(_ sections: [String]){
-        DispatchQueue.global().async {
-            let propertyListEncoder = try? PropertyListEncoder().encode(sections)
-            self.saveData.set(propertyListEncoder, forKey: "Sections")
-        }
-    }
-    
-    func setSwitch(sender: UISwitch, indexPath: IndexPath){
-        let switchKey = "SwitchState \(indexPath.section) \(indexPath.row)"
-        saveData.set(sender.isOn, forKey: switchKey)
-    }
-    
-    func findList() {
-        if let data = saveData.data(forKey: "ToDoList") {
-            if let decodedList = try? PropertyListDecoder().decode([[List]].self, from: data) {
-                list = decodedList
-            }
-        }
-    }
-    
-    func findDoneList() {
-        if let data = saveData.data(forKey: "DoneList") {
-            if let decodedList = try? PropertyListDecoder().decode([List].self, from: data) {
-                doneList = decodedList
-            }
-        }
-    }
-    
-    func findSection() {
-        if let data = saveData.data(forKey: "Sections") {
-            if let decodedSections = try? PropertyListDecoder().decode([String].self, from: data) {
-                sections = decodedSections
-            }
-        }
-    }
-    
-    func findSwitch(_ switchControl: UISwitch, indexPath: IndexPath) {
-        let switchKey = "SwitchState \(indexPath.section) \(indexPath.row)"
-        let switchState = saveData.bool(forKey: switchKey)
-        switchControl.isOn = switchState
-    }
-    
-}
