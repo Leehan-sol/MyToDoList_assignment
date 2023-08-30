@@ -9,9 +9,9 @@ import UIKit
 
 class ToDoViewController: UIViewController {
     @IBOutlet weak var todoTableView: UITableView!
-    var selectedSection: Int = 0
     let pickerFrame = UIPickerView(frame: CGRect(x: 5, y: 20, width: 250, height: 140))
-    let saveData = UserDefaults.standard // 수정하기
+    let saveData = UserDefaults.standard
+    var selectedSection = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,14 +19,11 @@ class ToDoViewController: UIViewController {
         todoTableView.dataSource = self
         pickerFrame.delegate = self
         pickerFrame.dataSource = self
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(false)
         findList()
         findDoneList()
         findSection()
     }
+    
     
     //MARK: -addButton Alert
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -53,12 +50,13 @@ class ToDoViewController: UIViewController {
             // 3-3) Section Add Action
             let sectionAddAction = UIAlertAction(title: "Add", style: .default) { action in
                 if let sectionName = textField.text {
-                    let newEmptyList: [List] = []
+                    let emptyList = [List]()
                     sections.append(sectionName)
-                    list.append(newEmptyList)
+                    list.append(emptyList)
                     
                     self.setSection(sections)
                     self.setList(list)
+                    self.todoTableView.reloadData()
                     self.pickerFrame.reloadAllComponents()
                 }
             }
@@ -89,12 +87,14 @@ class ToDoViewController: UIViewController {
         
         // 2) Main Add Action
         let mainAddAction = UIAlertAction(title: "Add", style: .default) { action in
-            let newItem = List(title: textField.text!, done: false)
-            list[self.selectedSection].append(newItem)
-            
-            self.setList(list)
-            
-            self.todoTableView.reloadData()
+            if textField.text != "" {
+                let newItem = List(title: textField.text!, done: false)
+                list[self.selectedSection].append(newItem)
+                
+                print(sections, list)
+                self.setList(list)
+                self.todoTableView.reloadData()
+            }
         }
         
         // 3) Main Calcel Action
@@ -112,18 +112,13 @@ class ToDoViewController: UIViewController {
         present(mainAlert, animated: true)
     }
     
-    
     // Switch OnOff시 Action
     @IBAction func switchOnOff(_ sender: UISwitch) {
         if let cell = sender.superview?.superview as? ToDoTableViewCell, let indexPath = todoTableView.indexPath(for: cell) {
             let item = list[indexPath.section][indexPath.row]
             let newItem = List(title: item.title, done: sender.isOn)
             
-            if newItem.done == true {
-                doneList.append(newItem)
-            } else {
-                doneList.removeAll {$0.title == newItem.title}
-            }
+            newItem.done ? doneList.append(newItem) : doneList.removeAll { $0.title == newItem.title }
             setDoneList(doneList)
             
             // 스위치 상태 저장
@@ -131,13 +126,111 @@ class ToDoViewController: UIViewController {
         }
     }
     
+}
+
+
+// MARK: -UITableViewDelegate
+extension ToDoViewController: UITableViewDelegate{
+    // 테이블뷰 row 선택시 애니메이션
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
-    // MARK: -userDefaults, 프로퍼티 리스트 타입으로 저장
+    // 테이블뷰 삭제기능
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            list[indexPath.section].remove(at: indexPath.row)
+            if !doneList.isEmpty {
+                doneList.remove(at: indexPath.row)
+            }
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            setList(list)
+            setDoneList(doneList)
+            setSection(sections)
+        }
+        
+        if list[indexPath.section].isEmpty {
+            sections.remove(at: indexPath.section)
+            list.remove(at: indexPath.section)
+            
+            setSection(sections)
+            setList(list)
+            print(sections, list)
+            
+            pickerFrame.reloadAllComponents()
+            todoTableView.reloadData()
+            
+            if selectedSection >= sections.count {
+                selectedSection = sections.count - 1
+            }
+        }
+    }
+}
+
+
+// MARK: -UITableViewDataSource
+extension ToDoViewController: UITableViewDataSource {
+    
+    // 섹션 개수
+    func numberOfSections(in tableView: UITableView) -> Int {
+        sections.count
+    }
+    
+    // 섹션의 헤더 내용
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section]
+    }
+    
+    // 섹션마다 Row개수
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return list[section].count
+    }
+    
+    // Row 내용
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoCell", for: indexPath) as! ToDoTableViewCell
+        cell.todoLabel.text = list[indexPath.section][indexPath.row].title
+        cell.todoSwitch.isOn = list[indexPath.section][indexPath.row].done
+        findSwitch(cell.todoSwitch, indexPath: indexPath)
+        
+        return cell
+    }
+    
+}
+
+
+// MARK: -UIPickerViewDelegate, UIPickerViewDataSource
+extension ToDoViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return sections.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return sections[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedSection = row
+    }
+    
+}
+
+
+// MARK: -userDefaults
+extension ToDoViewController {
     // PropertyListEncoder().encode()를 이용해서 바이너리 프로퍼티 리스트 형태로 인코딩하여 저장
     func setList(_ list: [[List]]){
         DispatchQueue.global().async {
             let propertyListEncoder = try? PropertyListEncoder().encode(list)
             self.saveData.set(propertyListEncoder, forKey: "ToDoList")
+            //            DispatchQueue.main.async {
+            //                self.todoTableView.reloadData()
+            //            }
         }
     }
     
@@ -188,80 +281,6 @@ class ToDoViewController: UIViewController {
         let switchKey = "SwitchState \(indexPath.section) \(indexPath.row)"
         let switchState = saveData.bool(forKey: switchKey)
         switchControl.isOn = switchState
-    }
-    
-}
-
-
-// MARK: -UITableViewDelegate
-extension ToDoViewController: UITableViewDelegate{
-    // 테이블뷰 row 선택시 애니메이션
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    // 테이블뷰 삭제기능
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            list[indexPath.section].remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            setList(list)
-        }
-        if list[indexPath.section].isEmpty {
-            sections.remove(at: indexPath.section)
-            setSection(sections)
-            todoTableView.reloadData()
-        }
-    }
-}
-
-// MARK: -UITableViewDataSource
-extension ToDoViewController: UITableViewDataSource {
-    
-    // 섹션 개수
-    func numberOfSections(in tableView: UITableView) -> Int {
-        sections.count
-    }
-    
-    // 섹션의 헤더 내용
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
-    }
-    
-    // 섹션마다 Row개수
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return list[section].count
-    }
-    
-    // Row 내용
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoCell", for: indexPath) as! ToDoTableViewCell
-        cell.todoLabel.text = list[indexPath.section][indexPath.row].title
-        cell.todoSwitch.isOn = list[indexPath.section][indexPath.row].done
-        findSwitch(cell.todoSwitch, indexPath: indexPath)
-
-        return cell
-    }
-    
-    
-}
-
-// MARK: -UIPickerViewDelegate, UIPickerViewDataSource
-extension ToDoViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return sections.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return sections[row]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedSection = row
     }
     
 }
