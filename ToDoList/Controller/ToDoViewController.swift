@@ -27,6 +27,13 @@ class ToDoViewController: UIViewController {
         
     }
     
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(false)
+//                funcModel.findSwitch(cell.todoSwitch, indexPath: indexPath, item: cell.todoLabel.text!)
+//            }
+//        }
+
+    
     
     
     //MARK: -addButton Alert
@@ -58,7 +65,6 @@ class ToDoViewController: UIViewController {
                     let emptyList = [ListModel]()
                     sections.append(sectionName)
                     list.append(emptyList)
-                    print(sections, list)
                     
                     self.funcModel.setSection(sections)
                     self.funcModel.setList(list)
@@ -97,7 +103,6 @@ class ToDoViewController: UIViewController {
                 let newItem = ListModel(title: textField.text!, done: false)
                 list[self.selectedSection].append(newItem)
                 
-                print(sections, list)
                 self.funcModel.setList(list)
                 self.todoTableView.reloadData()
             }
@@ -126,9 +131,11 @@ class ToDoViewController: UIViewController {
             
             if sender.isOn {
                 doneList.append(newItem)
+                print(doneList)
             } else {
                 if let indexToRemove = doneList.firstIndex(where: { $0.title == newItem.title }) {
                     doneList.remove(at: indexToRemove)
+                    print(doneList)
                 }
             }
             
@@ -149,36 +156,38 @@ extension ToDoViewController: UITableViewDelegate{
     
     // 테이블뷰 삭제기능
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let item = list[indexPath.section][indexPath.row]
+        print(item)
         if editingStyle == .delete {
             list[indexPath.section].remove(at: indexPath.row)
-            if !doneList.isEmpty {
-                doneList.remove(at: indexPath.row)
-            }
-            print(indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
             
+            if let deleteItemIndex = doneList.firstIndex(where: { $0.title == item.title }) {
+                doneList.remove(at: deleteItemIndex)
+                print(doneList)
+            }
+            
+            tableView.deleteRows(at: [indexPath], with: .fade)
             funcModel.setList(list)
             funcModel.setDoneList(doneList)
             funcModel.setSection(sections)
-        }
-        
-        if list[indexPath.section].isEmpty {
-            sections.remove(at: indexPath.section)
-            list.remove(at: indexPath.section)
             
-            funcModel.setSection(sections)
-            funcModel.setList(list)
-            
-            pickerFrame.reloadAllComponents()
-            todoTableView.reloadData()
-            
-            if selectedSection >= sections.count && selectedSection != 0 {
-                selectedSection = sections.count - 1
+            if list[indexPath.section].isEmpty {
+                sections.remove(at: indexPath.section)
+                list.remove(at: indexPath.section)
+                
+                funcModel.setSection(sections)
+                funcModel.setList(list)
+                
+                pickerFrame.reloadAllComponents()
+                todoTableView.reloadData()
+                
+                if selectedSection >= sections.count && selectedSection != 0 {
+                    selectedSection = sections.count - 1
+                }
             }
         }
     }
 }
-
 
 // MARK: -UITableViewDataSource
 extension ToDoViewController: UITableViewDataSource {
@@ -195,8 +204,12 @@ extension ToDoViewController: UITableViewDataSource {
     
     // 섹션마다 Row개수
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return list[section].count
-    }
+        if section < list.count {
+             return list[section].count
+         } else {
+             return 0
+         }
+     }
     
     // Row 내용
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

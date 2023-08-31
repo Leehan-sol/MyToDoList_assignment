@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ListModel: Codable {
+struct ListModel: Codable, Equatable {
     var title : String
     var done : Bool
 }

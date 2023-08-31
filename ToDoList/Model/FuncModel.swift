@@ -10,12 +10,6 @@ import UIKit
 
 struct FuncModel {
     let saveData = UserDefaults.standard
-
-    func findSwitch(_ switchControl: UISwitch, indexPath: IndexPath, item: String) {
-        let switchKey = "SwitchState \(indexPath.section) \(indexPath.row) \(item)"
-        let switchState = saveData.bool(forKey: switchKey)
-        switchControl.isOn = switchState
-    }
     
     func setSwitch(sender: UISwitch, indexPath: IndexPath, item: String){
         let switchKey = "SwitchState \(indexPath.section) \(indexPath.row) \(item)"
@@ -35,12 +29,18 @@ struct FuncModel {
             self.saveData.set(propertyListEncoder, forKey: "DoneList")
         }
     }
-    
+
     func setSection(_ sections: [String]){
         DispatchQueue.global().async {
             let propertyListEncoder = try? PropertyListEncoder().encode(sections)
             self.saveData.set(propertyListEncoder, forKey: "Sections")
         }
+    }
+    
+    func findSwitch(_ switchControl: UISwitch, indexPath: IndexPath, item: String) {
+        let switchKey = "SwitchState \(indexPath.section) \(indexPath.row) \(item)"
+        let switchState = saveData.bool(forKey: switchKey)
+        switchControl.isOn = switchState
     }
     
     func findList() {
