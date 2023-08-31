@@ -16,6 +16,16 @@
 
 # ✅  앱 구성
 <img width="648" alt="image" src="https://github.com/Leehan-sol/swift_ToDoList/assets/139109343/15f41341-39b8-4905-bb70-8828e9cd466a">
+<br/>
+<br/>
+<br/>
+Model : 앱의 데이터와 로직 관리<br/>
+<br/>
+View : UI 담당<br/>
+User의 Interaction에 따라 데이터를 표시하고 변경된 내용을 화면에 반영<br/>
+<br/>
+Controller : Model과 View사이의 인터페이스 역할<br/>
+User의 Interaction에 따라 Controller는 Model을 통해서 데이터를 가져와 그 정보를 바탕으로 View를 제어해서 User에게 전달<br/>
 
 <br/>
 
