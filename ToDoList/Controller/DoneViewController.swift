@@ -10,14 +10,14 @@ import UIKit
 class DoneViewController: UIViewController {
 
     @IBOutlet weak var doneTableView: UITableView!
-    var f = F()
+    var funcModel = FuncModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         doneTableView.delegate = self
         doneTableView.dataSource = self
         
-        f.findDoneList()
+        funcModel.findDoneList()
     }
 }
 

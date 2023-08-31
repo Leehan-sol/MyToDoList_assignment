@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct List: Codable {
+struct ListModel: Codable {
     var title : String
     var done : Bool
 }
 
-var dailyList = [List]()
-var doneList = [List]()
+var dailyList = [ListModel]()
+var doneList = [ListModel]()
 
 var list = [dailyList]
 

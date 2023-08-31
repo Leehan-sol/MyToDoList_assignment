@@ -10,55 +10,35 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
+    var urlModel = URLModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        urlModel.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
-        fetchImageURL()
+        urlModel.fetchImageURL()
     }
     
     @IBAction func refreshButtonPressed(_ sender: UIButton) {
-        fetchImageURL()
+        urlModel.fetchImageURL()
     }
     
-    func fetchImageURL() {
-        let urlAddress = "https://api.thecatapi.com/v1/images/search"
-        if let url = URL(string: urlAddress) {
-            let session = URLSession(configuration: .default)
-            let task = session.dataTask(with: url) { data, response, error in
-                if let error = error {
-                    print(error)
-                    return
-                }
-                if let safedata = data {
-                    if let image = self.parseJSON(safedata) {
-                        DispatchQueue.main.async {
-                            self.imageView.image = image
-                        }
-                    }
-                }
-            }
-            task.resume()
+}
+
+
+// MARK: -URLManagerDelegate
+extension ViewController: URLManagerDelegate {
+    func didUpdateImage(_ urlModel: URLModel, image: UIImage) {
+        DispatchQueue.main.async {
+            self.imageView.image = image
         }
     }
     
-    func parseJSON(_ parseData: Data) -> UIImage? {
-        let decoder = JSONDecoder()
-        do {
-            let decodedData = try decoder.decode([ImageData].self, from: parseData)
-            if let firstImage = decodedData.first,
-               let imageURL = URL(string: firstImage.url),
-               let imageData = try? Data(contentsOf: imageURL),
-               let image = UIImage(data: imageData) {
-                return image
-            }
-        } catch {
-            print(error)
-        }
-        return nil
+    func didFailWithError(error: Error) {
+        print(error)
     }
     
 }

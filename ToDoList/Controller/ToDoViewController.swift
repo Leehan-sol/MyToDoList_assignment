@@ -10,8 +10,8 @@ import UIKit
 class ToDoViewController: UIViewController {
     @IBOutlet weak var todoTableView: UITableView!
     let pickerFrame = UIPickerView(frame: CGRect(x: 5, y: 20, width: 250, height: 140))
+    var funcModel = FuncModel()
     var selectedSection = 0
-    var f = F()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,11 +21,12 @@ class ToDoViewController: UIViewController {
         pickerFrame.delegate = self
         pickerFrame.dataSource = self
         
-        f.findList()
-        f.findDoneList()
-        f.findSection()
+        funcModel.findList()
+        funcModel.findDoneList()
+        funcModel.findSection()
         
     }
+    
     
     
     //MARK: -addButton Alert
@@ -44,6 +45,7 @@ class ToDoViewController: UIViewController {
         let addAction = UIAlertAction(title: "Add", style: .default) { action in
             // 3-1) Section Alert
             let sectionAlert = UIAlertController(title: "Add New Section", message: "", preferredStyle: .alert)
+            
             // 3-2) Section Alert에 TextField 추가
             sectionAlert.addTextField { alertTextField in
                 alertTextField.placeholder = "Write here"
@@ -53,12 +55,13 @@ class ToDoViewController: UIViewController {
             // 3-3) Section Add Action
             let sectionAddAction = UIAlertAction(title: "Add", style: .default) { action in
                 if let sectionName = textField.text {
-                    let emptyList = [List]()
+                    let emptyList = [ListModel]()
                     sections.append(sectionName)
                     list.append(emptyList)
+                    print(sections, list)
                     
-                    self.f.setSection(sections)
-                    self.f.setList(list)
+                    self.funcModel.setSection(sections)
+                    self.funcModel.setList(list)
                     self.todoTableView.reloadData()
                     self.pickerFrame.reloadAllComponents()
                 }
@@ -91,11 +94,11 @@ class ToDoViewController: UIViewController {
         // 2) Main Add Action
         let mainAddAction = UIAlertAction(title: "Add", style: .default) { action in
             if textField.text != "" {
-                let newItem = List(title: textField.text!, done: false)
+                let newItem = ListModel(title: textField.text!, done: false)
                 list[self.selectedSection].append(newItem)
                 
                 print(sections, list)
-                self.f.setList(list)
+                self.funcModel.setList(list)
                 self.todoTableView.reloadData()
             }
         }
@@ -119,20 +122,18 @@ class ToDoViewController: UIViewController {
     @IBAction func switchOnOff(_ sender: UISwitch) {
         if let cell = sender.superview?.superview as? ToDoTableViewCell, let indexPath = todoTableView.indexPath(for: cell) {
             let item = list[indexPath.section][indexPath.row]
-            let newItem = List(title: item.title, done: sender.isOn)
+            let newItem = ListModel(title: item.title, done: sender.isOn)
             
             if sender.isOn {
-                      doneList.append(newItem)
-                  } else {
-                      if let indexToRemove = doneList.firstIndex(where: { $0.title == newItem.title }) {
-                          doneList.remove(at: indexToRemove)
-                      }
-                  }
+                doneList.append(newItem)
+            } else {
+                if let indexToRemove = doneList.firstIndex(where: { $0.title == newItem.title }) {
+                    doneList.remove(at: indexToRemove)
+                }
+            }
             
-            f.setDoneList(doneList)
-            
-            // 스위치 상태 저장
-            f.setSwitch(sender: cell.todoSwitch, indexPath: indexPath)
+            funcModel.setDoneList(doneList)
+            funcModel.setSwitch(sender: cell.todoSwitch, indexPath: indexPath, item: item.title)
         }
     }
     
@@ -153,24 +154,25 @@ extension ToDoViewController: UITableViewDelegate{
             if !doneList.isEmpty {
                 doneList.remove(at: indexPath.row)
             }
+            print(indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             
-            f.setList(list)
-            f.setDoneList(doneList)
-            f.setSection(sections)
+            funcModel.setList(list)
+            funcModel.setDoneList(doneList)
+            funcModel.setSection(sections)
         }
         
         if list[indexPath.section].isEmpty {
             sections.remove(at: indexPath.section)
             list.remove(at: indexPath.section)
             
-            f.setSection(sections)
-            f.setList(list)
+            funcModel.setSection(sections)
+            funcModel.setList(list)
             
             pickerFrame.reloadAllComponents()
             todoTableView.reloadData()
             
-            if selectedSection >= sections.count {
+            if selectedSection >= sections.count && selectedSection != 0 {
                 selectedSection = sections.count - 1
             }
         }
@@ -201,7 +203,7 @@ extension ToDoViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoCell", for: indexPath) as! ToDoTableViewCell
         cell.todoLabel.text = list[indexPath.section][indexPath.row].title
         cell.todoSwitch.isOn = list[indexPath.section][indexPath.row].done
-        f.findSwitch(cell.todoSwitch, indexPath: indexPath)
+        funcModel.findSwitch(cell.todoSwitch, indexPath: indexPath, item: cell.todoLabel.text!)
         
         return cell
     }

@@ -8,28 +8,28 @@
 import Foundation
 import UIKit
 
-struct F {
+struct FuncModel {
     let saveData = UserDefaults.standard
-    
-    func findSwitch(_ switchControl: UISwitch, indexPath: IndexPath) {
-        let switchKey = "SwitchState \(indexPath.section) \(indexPath.row)"
+
+    func findSwitch(_ switchControl: UISwitch, indexPath: IndexPath, item: String) {
+        let switchKey = "SwitchState \(indexPath.section) \(indexPath.row) \(item)"
         let switchState = saveData.bool(forKey: switchKey)
         switchControl.isOn = switchState
     }
     
-    func setSwitch(sender: UISwitch, indexPath: IndexPath){
-        let switchKey = "SwitchState \(indexPath.section) \(indexPath.row)"
+    func setSwitch(sender: UISwitch, indexPath: IndexPath, item: String){
+        let switchKey = "SwitchState \(indexPath.section) \(indexPath.row) \(item)"
         saveData.set(sender.isOn, forKey: switchKey)
     }
     
-    func setList(_ list: [[List]]){
+    func setList(_ list: [[ListModel]]){
         DispatchQueue.global().async {
             let propertyListEncoder = try? PropertyListEncoder().encode(list)
             self.saveData.set(propertyListEncoder, forKey: "ToDoList")
         }
     }
     
-    func setDoneList(_ doneList: [List]){
+    func setDoneList(_ doneList: [ListModel]){
         DispatchQueue.global().async {
             let propertyListEncoder = try? PropertyListEncoder().encode(doneList)
             self.saveData.set(propertyListEncoder, forKey: "DoneList")
@@ -45,7 +45,7 @@ struct F {
     
     func findList() {
         if let data = saveData.data(forKey: "ToDoList") {
-            if let decodedList = try? PropertyListDecoder().decode([[List]].self, from: data) {
+            if let decodedList = try? PropertyListDecoder().decode([[ListModel]].self, from: data) {
                 list = decodedList
             }
         }
@@ -53,7 +53,7 @@ struct F {
     
     func findDoneList() {
         if let data = saveData.data(forKey: "DoneList") {
-            if let decodedList = try? PropertyListDecoder().decode([List].self, from: data) {
+            if let decodedList = try? PropertyListDecoder().decode([ListModel].self, from: data) {
                 doneList = decodedList
             }
         }
