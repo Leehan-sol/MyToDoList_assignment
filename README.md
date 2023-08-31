@@ -18,7 +18,6 @@
 <img width="648" alt="image" src="https://github.com/Leehan-sol/swift_ToDoList/assets/139109343/15f41341-39b8-4905-bb70-8828e9cd466a">
 <br/>
 <br/>
-<br/>
 Model : 앱의 데이터와 로직 관리<br/>
 <br/>
 View : UI 담당<br/>
