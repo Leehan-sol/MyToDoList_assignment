@@ -27,13 +27,6 @@ class ToDoViewController: UIViewController {
         
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(false)
-//                funcModel.findSwitch(cell.todoSwitch, indexPath: indexPath, item: cell.todoLabel.text!)
-//            }
-//        }
-
-    
     
     
     //MARK: -addButton Alert
