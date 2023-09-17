@@ -26,6 +26,14 @@ class ViewController: UIViewController {
         urlModel.fetchImageURL()
     }
     
+    
+    
+    @IBAction func profileButtonPressed(_ sender: UIButton) {
+        let destinationVC = ProfileDesignViewController()
+        destinationVC.modalPresentationStyle = .fullScreen
+              self.present(destinationVC, animated: true, completion: nil)
+    }
+    
 }
 
 

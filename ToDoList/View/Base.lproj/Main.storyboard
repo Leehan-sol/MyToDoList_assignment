@@ -18,23 +18,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lHs-Bb-XtH">
-                                <rect key="frame" x="123.33333333333333" y="523" width="146.33333333333337" height="50"/>
+                                <rect key="frame" x="155" y="509" width="83" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Done List">
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="30"/>
-                                </buttonConfiguration>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Done List"/>
                                 <connections>
                                     <segue destination="d1c-Vw-Peq" kind="show" id="zmg-e9-7J5"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NpK-Rs-ZsD">
-                                <rect key="frame" x="124.33333333333333" y="443" width="144.33333333333337" height="50"/>
+                                <rect key="frame" x="155.66666666666666" y="443" width="82" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="ToDo List">
-                                    <fontDescription key="titleFontDescription" type="system" pointSize="30"/>
-                                </buttonConfiguration>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="ToDo List"/>
                                 <connections>
                                     <segue destination="7JF-Zr-KgS" kind="show" id="DVo-KU-3ky"/>
                                 </connections>
@@ -56,26 +54,39 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pmq-XH-5uW">
-                                <rect key="frame" x="151.33333333333334" y="763" width="90.666666666666657" height="35"/>
+                                <rect key="frame" x="151.33333333333334" y="731" width="90.666666666666657" height="35"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="gray" title="Made By"/>
                                 <connections>
                                     <segue destination="iKr-rc-9UA" kind="show" id="n1j-4t-Ccu"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0d9-fv-t5s">
+                                <rect key="frame" x="144" y="575" width="105" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Profile Page">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="profileButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="g9E-mD-Kti"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="0d9-fv-t5s" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0ZP-rr-wMK"/>
                             <constraint firstItem="Yw5-iF-xOr" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7nB-Bc-Xt4"/>
                             <constraint firstItem="lHs-Bb-XtH" firstAttribute="top" secondItem="NpK-Rs-ZsD" secondAttribute="bottom" constant="30" id="9hG-5u-gst"/>
                             <constraint firstItem="51O-2y-tUt" firstAttribute="top" secondItem="Yw5-iF-xOr" secondAttribute="bottom" constant="40" id="AHo-jw-eaR"/>
                             <constraint firstItem="51O-2y-tUt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BvT-Rr-WHA"/>
+                            <constraint firstItem="pmq-XH-5uW" firstAttribute="top" secondItem="0d9-fv-t5s" secondAttribute="bottom" constant="120" id="ROE-RH-7gW"/>
                             <constraint firstItem="lHs-Bb-XtH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dA8-Fk-6yV"/>
                             <constraint firstItem="Yw5-iF-xOr" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="fUH-4x-PMA"/>
                             <constraint firstItem="pmq-XH-5uW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="uOw-v4-kwS"/>
                             <constraint firstItem="NpK-Rs-ZsD" firstAttribute="top" secondItem="Yw5-iF-xOr" secondAttribute="bottom" constant="90" id="uie-lB-gDP"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="pmq-XH-5uW" secondAttribute="bottom" constant="20" id="wTj-oW-eLn"/>
+                            <constraint firstItem="0d9-fv-t5s" firstAttribute="top" secondItem="lHs-Bb-XtH" secondAttribute="bottom" constant="30" id="vRi-8S-N0A"/>
                             <constraint firstItem="NpK-Rs-ZsD" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yZd-AH-pUT"/>
                         </constraints>
                     </view>
