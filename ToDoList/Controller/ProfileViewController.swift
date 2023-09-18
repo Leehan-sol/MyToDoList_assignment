@@ -6,11 +6,16 @@
 //
 
 import UIKit
+import CoreData
 
 
 class ProfileViewController: UIViewController {
-    var userModel = UserModel.shared
+    let appDelegate = UIApplication.shared.delegate as? AppDelegate
+    lazy var context = appDelegate?.persistentContainer.viewContext
+    var container: NSPersistentContainer!
+    
     var dataChangedHandler: ((UserModel) -> Void)?
+    var userModel: UserModel?
     
     lazy var backButton: UIButton = {
         let btn = UIButton()
@@ -115,7 +120,6 @@ class ProfileViewController: UIViewController {
     }()
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -160,17 +164,19 @@ class ProfileViewController: UIViewController {
         
     }
     
-    func setupTextField(){
+    func setupTextField() {
         idTextField.delegate = self
         nameTextField.delegate = self
         introductionTextField.delegate = self
         addressTextField.delegate = self
         
-        idTextField.text = userModel.id
-        nameTextField.text = userModel.name
-        introductionTextField.text = userModel.introduction
-        addressTextField.text = userModel.address
-        
+        if let userModel = userModel {
+
+            idTextField.text = userModel.id ?? ""
+            nameTextField.text = userModel.name ?? ""
+            introductionTextField.text = userModel.introduction ?? ""
+            addressTextField.text = userModel.address ?? ""
+        }
     }
     
     
@@ -181,26 +187,38 @@ class ProfileViewController: UIViewController {
     
     
     @objc func saveButtonTapped() {
-        
-        if idTextField.text != nil {
-            userModel.id = idTextField.text
-        }
-        if nameTextField.text != "" {
-            userModel.name = nameTextField.text
-        }
-        if introductionTextField.text != "" {
-            userModel.introduction = introductionTextField.text
-        }
-        if addressTextField.text != "" {
-            userModel.address = addressTextField.text
-        }
-    
+        if let userModel = userModel {
+            saveUser()
+            if let id = idTextField.text {
+                userModel.id = id
+            }
+            if let name = nameTextField.text {
+                userModel.name = name
+            }
+            if let introduction = introductionTextField.text {
+                userModel.introduction = introduction
+            }
+            if let address = addressTextField.text {
+                userModel.address = address
+            }
+            
             dataChangedHandler?(userModel)
-            print(userModel)
+        }
         
         self.dismiss(animated: true, completion: nil)
     }
     
+    
+    func saveUser(){
+        print(#function)
+        do {
+            try appDelegate?.saveContext()
+            print("Success saving data")
+        } catch {
+            print("Error saving context \(error)")
+        }
+        
+    }
     
     
 }

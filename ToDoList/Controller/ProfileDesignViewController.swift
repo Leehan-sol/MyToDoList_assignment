@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import CoreData
 
 
 // MARK: - Preview
@@ -254,19 +255,24 @@ class ProfileDesignViewController: UIViewController {
     }()
     
     
-    // MARK: - LifeCycle
     
     let catPhotos: [UIImage] = [#imageLiteral(resourceName: "のせ猫『節黒仙翁』"), #imageLiteral(resourceName: "3b44bb8c-eab7-408c-9a46-54537cc03f97"), #imageLiteral(resourceName: "해연갤 - 붕붕이 취미_ 좀 이상한 고양이 짤 모으기 (1)"), #imageLiteral(resourceName: "Try to be an avocado today 🥑"), #imageLiteral(resourceName: "Zey"), #imageLiteral(resourceName: "e377cf34-3484-4148-af24-d199654385f3"), #imageLiteral(resourceName: "The Pastel-Hued World Of Instagram Artist Michele Bisaillon - IGNANT"), #imageLiteral(resourceName: "해연갤 - 붕붕이 취미_ 좀 이상한 고양이 짤 모으기"), #imageLiteral(resourceName: "_ 복사본"), #imageLiteral(resourceName: "_ 1"), #imageLiteral(resourceName: "_ (3)"), #imageLiteral(resourceName: "Follow_ @elegant_ee 1")]
-    var userModel = UserModel.shared
+    let appDelegate = UIApplication.shared.delegate as? AppDelegate
+    lazy var context = appDelegate?.persistentContainer.viewContext
+    var container: NSPersistentContainer!
+    var userModel: UserModel?
     
-    
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
         setupConstraint()
         setupCollectionView()
+        loadUser()
         setupUser()
+        
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
     }
     
@@ -363,38 +369,32 @@ class ProfileDesignViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "cellID")
     }
-    
-    
-    func setupUser(){
-        userModel.id = "2__hansol"
-        userModel.name = "한솔"
-        userModel.introduction = "ios Developer 🍎"
-        userModel.address = "https://velog.io/@ho20128"
-        
-        userId.text = userModel.id
-        userName.text = userModel.name
-        userIntroduction.text = userModel.introduction
-        userAddress.text = userModel.address
-        print(userModel)
-        
-    }
+
     
     @objc func backButtonTapped() {
         self.dismiss(animated: true, completion: nil)
         
     }
     
-    
     @objc func profileButtonTapped() {
         let destinationVC = ProfileViewController()
+        let managedObjectContext = self.context
+        destinationVC.context = managedObjectContext
+        destinationVC.container = container
         destinationVC.userModel = userModel
-        destinationVC.dataChangedHandler = { [weak self] newUser in
-            self?.userModel = newUser
+        print(userModel)
+        
+        destinationVC.dataChangedHandler = { [weak self] (newUser: UserModel) in
             self?.userId.text = newUser.id
             self?.userName.text = newUser.name
             self?.userIntroduction.text = newUser.introduction
             self?.userAddress.text = newUser.address
             
+            do {
+                try managedObjectContext?.save()
+            } catch {
+                print("Error saving data to Core Data: \(error)")
+            }
         }
         
         destinationVC.modalPresentationStyle = .fullScreen
@@ -402,7 +402,50 @@ class ProfileDesignViewController: UIViewController {
     }
     
     
-}
+    func loadUser() {
+          let request: NSFetchRequest<UserModel> = UserModel.fetchRequest()
+          do {
+              let fetchedUserModels = try context?.fetch(request)
+              if let user = fetchedUserModels?.first {
+                  userModel = user
+                  setupUser()
+              }
+          } catch {
+              print("Error fetching data from context \(error)")
+          }
+      }
+
+    
+    func saveUser() {
+           if let context = context {
+                   userModel = UserModel(context: context)
+                   userModel?.id = "2__hansol"
+                   userModel?.name = "한솔"
+                   userModel?.introduction = "ios Developer 🍎"
+                   userModel?.address = "https://velog.io/@ho20128"
+               }
+
+               do {
+                   try context?.save()
+                   print("User saved successfully.")
+               } catch {
+                   print("Error saving user: \(error)")
+               }
+           }
+    
+    
+    func setupUser(){
+            userId.text = userModel?.id
+            userName.text = userModel?.name
+        userIntroduction.text = userModel?.introduction
+            userAddress.text = userModel?.address
+        }
+    
+    
+       }
+
+    
+    
 
 
 
