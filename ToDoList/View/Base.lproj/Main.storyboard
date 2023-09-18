@@ -54,9 +54,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pmq-XH-5uW">
-                                <rect key="frame" x="151.33333333333334" y="733" width="90.666666666666657" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="gray" title="Made By"/>
+                                <rect key="frame" x="166.66666666666666" y="738" width="60" height="30"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Made By"/>
                                 <connections>
                                     <segue destination="iKr-rc-9UA" kind="show" id="n1j-4t-Ccu"/>
                                 </connections>
