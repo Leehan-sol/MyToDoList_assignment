@@ -35,6 +35,7 @@ struct ViewPreview: PreviewProvider {
 class ProfileDesignViewController: UIViewController {
     
     //MARK: -Properties
+    let catPhotos: [UIImage] = [#imageLiteral(resourceName: "のせ猫『節黒仙翁』"), #imageLiteral(resourceName: "3b44bb8c-eab7-408c-9a46-54537cc03f97"), #imageLiteral(resourceName: "해연갤 - 붕붕이 취미_ 좀 이상한 고양이 짤 모으기 (1)"), #imageLiteral(resourceName: "Try to be an avocado today 🥑"), #imageLiteral(resourceName: "Zey"), #imageLiteral(resourceName: "e377cf34-3484-4148-af24-d199654385f3"), #imageLiteral(resourceName: "The Pastel-Hued World Of Instagram Artist Michele Bisaillon - IGNANT"), #imageLiteral(resourceName: "해연갤 - 붕붕이 취미_ 좀 이상한 고양이 짤 모으기"), #imageLiteral(resourceName: "_ 복사본"), #imageLiteral(resourceName: "_ 1"), #imageLiteral(resourceName: "_ (3)"), #imageLiteral(resourceName: "Follow_ @elegant_ee 1")]
     
     lazy var userName: UILabel = {
         let label = UILabel()
@@ -46,8 +47,7 @@ class ProfileDesignViewController: UIViewController {
     lazy var backButton: UIButton = {
         let btn = UIButton()
         btn.tintColor = .black
-        let backImage = UIImage(systemName: "chevron.backward")
-        btn.setImage(backImage, for: .normal)
+        btn.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         btn.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
         return btn
     }()
@@ -55,8 +55,7 @@ class ProfileDesignViewController: UIViewController {
     lazy var menuButton: UIButton = {
         let btn = UIButton()
         btn.tintColor = .black
-        let backImage = UIImage(systemName: "square.and.pencil")
-        btn.setImage(backImage, for: .normal)
+        btn.setImage(UIImage(systemName: "text.justify"), for: .normal)
         return btn
     }()
     
@@ -122,7 +121,7 @@ class ProfileDesignViewController: UIViewController {
     
     lazy var introduction: UILabel = {
         let label = UILabel()
-        label.text = "ios Developer 🔥"
+        label.text = "ios Developer 🍎"
         label.font = UIFont.systemFont(ofSize: 18)
         return label
     }()
@@ -155,6 +154,41 @@ class ProfileDesignViewController: UIViewController {
         btn.setImage(UIImage(named: "More"), for: .normal)
         return btn
     }()
+
+    lazy var middleButton: UIButton = {
+        let btn = UIButton()
+        btn.tintColor = .black
+        btn.setImage(UIImage(named: "Grid"), for: .normal)
+        return btn
+    }()
+    
+    lazy var middleBorderBar: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemGray6
+        return view
+    }()
+    
+    lazy var middleBar: UIView = {
+        let view = UIView()
+        view.addSubview(middleBorderBar)
+        view.addSubview(middleButton)
+        return view
+    }()
+    
+    lazy var bottomBar: UIView = {
+        let view = UIView()
+        view.addSubview(bottomButton)
+        return view
+    }()
+
+    lazy var bottomButton: UIButton = {
+        let btn = UIButton()
+        btn.tintColor = .black
+        btn.setImage(UIImage(named: "profile"), for: .normal)
+        btn.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
+        return btn
+    }()
+
     
     
     // MARK: - StackView
@@ -221,7 +255,6 @@ class ProfileDesignViewController: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
 
         flowLayout.scrollDirection = .vertical
-        cv.backgroundColor = .orange
         return cv
     }()
     
@@ -249,6 +282,8 @@ class ProfileDesignViewController: UIViewController {
         view.addSubview(detailStackView)
         view.addSubview(buttonStackView)
         view.addSubview(collectionView)
+        view.addSubview(bottomBar)
+        view.addSubview(middleBar)
         
         userName.translatesAutoresizingMaskIntoConstraints = false
         backButton.translatesAutoresizingMaskIntoConstraints = false
@@ -258,7 +293,11 @@ class ProfileDesignViewController: UIViewController {
         detailStackView.translatesAutoresizingMaskIntoConstraints = false
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
+        middleBorderBar.translatesAutoresizingMaskIntoConstraints = false
+        middleButton.translatesAutoresizingMaskIntoConstraints = false
+        middleBar.translatesAutoresizingMaskIntoConstraints = false
+        bottomButton.translatesAutoresizingMaskIntoConstraints = false
+        bottomBar.translatesAutoresizingMaskIntoConstraints = false
     }
     
     
@@ -279,8 +318,8 @@ class ProfileDesignViewController: UIViewController {
             userImage.widthAnchor.constraint(equalToConstant: 100),
             userImage.heightAnchor.constraint(equalToConstant: 100),
             
-            stackView.leadingAnchor.constraint(equalTo: userImage.trailingAnchor, constant: 20),
             stackView.topAnchor.constraint(equalTo: userName.bottomAnchor, constant: 50),
+            stackView.leadingAnchor.constraint(equalTo: userImage.trailingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -28),
             
             detailStackView.topAnchor.constraint(equalTo: userImage.bottomAnchor, constant: 20),
@@ -289,11 +328,32 @@ class ProfileDesignViewController: UIViewController {
             buttonStackView.topAnchor.constraint(equalTo: detailStackView.bottomAnchor, constant: 10),
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            middleBorderBar.topAnchor.constraint(equalTo: middleBar.topAnchor, constant: 3),
+            middleBorderBar.leadingAnchor.constraint(equalTo: middleBar.leadingAnchor),
+            middleBorderBar.trailingAnchor.constraint(equalTo: middleBar.trailingAnchor),
+            middleBorderBar.heightAnchor.constraint(equalToConstant: 1),
+            
+            middleButton.centerYAnchor.constraint(equalTo: middleBar.centerYAnchor),
+            middleButton.centerXAnchor.constraint(equalTo: view.leadingAnchor, constant: view.frame.width / 6),
+            
+            middleBar.topAnchor.constraint(equalTo: buttonStackView.bottomAnchor, constant: 5),
+            middleBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            middleBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            middleBar.heightAnchor.constraint(equalToConstant: 40),
     
+            collectionView.topAnchor.constraint(equalTo: middleBar.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 2)
+            collectionView.bottomAnchor.constraint(equalTo: bottomBar.topAnchor),
+            
+            bottomButton.topAnchor.constraint(equalTo: bottomBar.topAnchor, constant: 15),
+            bottomButton.centerXAnchor.constraint(equalTo: bottomBar.centerXAnchor),
+            
+            bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomBar.heightAnchor.constraint(equalToConstant: 70)
             
         ])
     }
@@ -312,20 +372,24 @@ class ProfileDesignViewController: UIViewController {
     }
     
     
+    @objc func profileButtonTapped(){
+        
+    }
     
 }
 
 
 // MARK: - UICollectionViewDataSource
+
 extension ProfileDesignViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 9
-    }
     
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 12
+    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as! CollectionViewCell
-        cell.backgroundColor = .yellow
+        cell.imageView.image = catPhotos[indexPath.row]
         return cell
     }
     
@@ -348,9 +412,9 @@ extension ProfileDesignViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         let width = (collectionView.frame.width - 4) / 3
-        let height = (collectionView.frame.height - 4) / 3
-        let size = CGSize(width: width, height: height)
+        let size = CGSize(width: width, height: width)
         return size
     }
+    
 }
 
