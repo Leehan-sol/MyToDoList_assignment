@@ -55,7 +55,7 @@ class ProfileDesignViewController: UIViewController {
     lazy var menuButton: UIButton = {
         let btn = UIButton()
         btn.tintColor = .black
-        btn.setImage(UIImage(systemName: "text.justify"), for: .normal)
+        btn.setImage(UIImage(named: "Menu"), for: .normal)
         return btn
     }()
     
@@ -94,21 +94,21 @@ class ProfileDesignViewController: UIViewController {
     lazy var post: UILabel = {
         let label = UILabel()
         label.text = "post"
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         return label
     }()
     
     lazy var follower: UILabel = {
         let label = UILabel()
         label.text = "follower"
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         return label
     }()
     
     lazy var following: UILabel = {
         let label = UILabel()
         label.text = "following"
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         return label
     }()
     
@@ -122,14 +122,14 @@ class ProfileDesignViewController: UIViewController {
     lazy var introduction: UILabel = {
         let label = UILabel()
         label.text = "ios Developer 🍎"
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .light)
         return label
     }()
     
     lazy var link: UILabel = {
         let label = UILabel()
         label.text = "https://velog.io/@ho20128"
-        label.font = UIFont.systemFont(ofSize: 17)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         label.textColor = UIColor.blue
         return label
     }()
