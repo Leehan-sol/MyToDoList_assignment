@@ -31,7 +31,10 @@ struct ViewPreview: PreviewProvider {
 
 
 // MARK: - UIViewController
+
 class ProfileDesignViewController: UIViewController {
+    
+    //MARK: -Properties
     
     lazy var userName: UILabel = {
         let label = UILabel()
@@ -52,14 +55,14 @@ class ProfileDesignViewController: UIViewController {
     lazy var menuButton: UIButton = {
         let btn = UIButton()
         btn.tintColor = .black
-        let backImage = UIImage(systemName: "text.justify")
+        let backImage = UIImage(systemName: "square.and.pencil")
         btn.setImage(backImage, for: .normal)
         return btn
     }()
     
     lazy var userImage: UIImageView = {
         let img = UIImageView()
-        img.image = #imageLiteral(resourceName: "_ (3)")
+        img.image = #imageLiteral(resourceName: "_")
         img.contentMode = .scaleToFill
         img.clipsToBounds = true
         img.layer.cornerRadius = 50
@@ -112,7 +115,7 @@ class ProfileDesignViewController: UIViewController {
     
     lazy var nickname: UILabel = {
         let label = UILabel()
-        label.text = "이한솔"
+        label.text = "한솔"
         label.font = UIFont.boldSystemFont(ofSize: 18)
         return label
     }()
@@ -153,31 +156,40 @@ class ProfileDesignViewController: UIViewController {
         return btn
     }()
     
-
+    
     // MARK: - StackView
     
-    lazy var numberStackView: UIStackView = {
-        let st = UIStackView(arrangedSubviews: [postNumber, followerNumber, followingNumber])
+    lazy var postStackView: UIStackView = {
+        let st = UIStackView(arrangedSubviews: [postNumber, post])
         st.spacing = 5
-        st.axis = .horizontal
+        st.axis = .vertical
         st.distribution = .fillEqually
         st.alignment = .center
         return st
     }()
     
-    lazy var nameStackView: UIStackView = {
-        let st = UIStackView(arrangedSubviews: [post, follower, following])
-       st.spacing = 5
-        st.axis = .horizontal
+    lazy var followerStackView: UIStackView = {
+        let st = UIStackView(arrangedSubviews: [followerNumber, follower])
+        st.spacing = 5
+        st.axis = .vertical
+        st.distribution = .fillEqually
+        st.alignment = .center
+        return st
+    }()
+    
+    lazy var followingStackView: UIStackView = {
+        let st = UIStackView(arrangedSubviews: [followingNumber, following])
+        st.spacing = 5
+        st.axis = .vertical
         st.distribution = .fillEqually
         st.alignment = .center
         return st
     }()
     
     lazy var stackView: UIStackView = {
-        let st = UIStackView(arrangedSubviews: [numberStackView, nameStackView])
-       st.spacing = 5
-        st.axis = .vertical
+        let st = UIStackView(arrangedSubviews: [postStackView, followerStackView, followingStackView])
+        st.spacing = 5
+        st.axis = .horizontal
         st.distribution = .fillEqually
         st.alignment = .fill
         return st
@@ -185,7 +197,7 @@ class ProfileDesignViewController: UIViewController {
     
     lazy var detailStackView: UIStackView = {
         let st = UIStackView(arrangedSubviews: [nickname, introduction, link])
-       st.spacing = 2
+        st.spacing = 2
         st.axis = .vertical
         st.distribution = .fillEqually
         st.alignment = .fill
@@ -194,7 +206,7 @@ class ProfileDesignViewController: UIViewController {
     
     lazy var buttonStackView: UIStackView = {
         let st = UIStackView(arrangedSubviews: [followButton, messageButton, moreButton])
-        st.spacing = 7
+        st.spacing = 8
         st.axis = .horizontal
         st.distribution = .fillProportionally
         st.alignment = .fill
@@ -202,17 +214,30 @@ class ProfileDesignViewController: UIViewController {
     }()
     
     
-    // MARK: - Life Cycle
+    // MARK: - CollectionView
+    
+    let collectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+
+        flowLayout.scrollDirection = .vertical
+        cv.backgroundColor = .orange
+        return cv
+    }()
+    
+    
+    // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
         setupConstraint()
+        setupCollectionView()
         
     }
     
- 
+    
     func setupUI(){
         view.backgroundColor = .systemBackground
         
@@ -223,7 +248,7 @@ class ProfileDesignViewController: UIViewController {
         view.addSubview(stackView)
         view.addSubview(detailStackView)
         view.addSubview(buttonStackView)
-        
+        view.addSubview(collectionView)
         
         userName.translatesAutoresizingMaskIntoConstraints = false
         backButton.translatesAutoresizingMaskIntoConstraints = false
@@ -232,6 +257,7 @@ class ProfileDesignViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         detailStackView.translatesAutoresizingMaskIntoConstraints = false
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
         
     }
     
@@ -253,8 +279,8 @@ class ProfileDesignViewController: UIViewController {
             userImage.widthAnchor.constraint(equalToConstant: 100),
             userImage.heightAnchor.constraint(equalToConstant: 100),
             
-            stackView.leadingAnchor.constraint(equalTo: userImage.trailingAnchor, constant: 28),
-            stackView.topAnchor.constraint(equalTo: userName.bottomAnchor, constant: 40),
+            stackView.leadingAnchor.constraint(equalTo: userImage.trailingAnchor, constant: 20),
+            stackView.topAnchor.constraint(equalTo: userName.bottomAnchor, constant: 50),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -28),
             
             detailStackView.topAnchor.constraint(equalTo: userImage.bottomAnchor, constant: 20),
@@ -262,9 +288,21 @@ class ProfileDesignViewController: UIViewController {
             
             buttonStackView.topAnchor.constraint(equalTo: detailStackView.bottomAnchor, constant: 10),
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+    
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 2)
             
         ])
+    }
+    
+    
+    func setupCollectionView(){
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "cellID")
     }
     
     
@@ -275,9 +313,44 @@ class ProfileDesignViewController: UIViewController {
     
     
     
-    
-    
-    
-    
-    
 }
+
+
+// MARK: - UICollectionViewDataSource
+extension ProfileDesignViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 9
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellID", for: indexPath) as! CollectionViewCell
+        cell.backgroundColor = .yellow
+        return cell
+    }
+    
+
+}
+
+
+// MARK: -UICollectionViewDelegateFlowLayout
+
+extension ProfileDesignViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 2
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 2
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        let width = (collectionView.frame.width - 4) / 3
+        let height = (collectionView.frame.height - 4) / 3
+        let size = CGSize(width: width, height: height)
+        return size
+    }
+}
+
