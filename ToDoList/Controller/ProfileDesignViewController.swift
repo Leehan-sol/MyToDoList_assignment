@@ -9,28 +9,6 @@ import UIKit
 import SwiftUI
 import CoreData
 
-
-// MARK: - Preview
-
-struct ViewControllerRepresentable: UIViewControllerRepresentable {
-    typealias UIViewControllerType = ProfileDesignViewController
-    
-    func makeUIViewController(context: Context) -> ProfileDesignViewController {
-        return ProfileDesignViewController()
-    }
-    
-    func updateUIViewController(_ uiViewController: ProfileDesignViewController, context: Context) {
-    }
-}
-
-@available(iOS 13.0.0, *)
-struct ViewPreview: PreviewProvider {
-    static var previews: some View {
-        ViewControllerRepresentable()
-    }
-}
-
-
 // MARK: - UIViewController
 
 class ProfileDesignViewController: UIViewController {
@@ -160,7 +138,7 @@ class ProfileDesignViewController: UIViewController {
     
     lazy var middleBorderBar: UIView = {
         let view = UIView()
-        view.backgroundColor = .systemGray6
+        view.backgroundColor = .systemGray5
         return view
     }()
     
@@ -255,26 +233,36 @@ class ProfileDesignViewController: UIViewController {
     }()
     
     
+    // MARK: - variable
     
     let catPhotos: [UIImage] = [#imageLiteral(resourceName: "のせ猫『節黒仙翁』"), #imageLiteral(resourceName: "3b44bb8c-eab7-408c-9a46-54537cc03f97"), #imageLiteral(resourceName: "해연갤 - 붕붕이 취미_ 좀 이상한 고양이 짤 모으기 (1)"), #imageLiteral(resourceName: "Try to be an avocado today 🥑"), #imageLiteral(resourceName: "Zey"), #imageLiteral(resourceName: "e377cf34-3484-4148-af24-d199654385f3"), #imageLiteral(resourceName: "The Pastel-Hued World Of Instagram Artist Michele Bisaillon - IGNANT"), #imageLiteral(resourceName: "해연갤 - 붕붕이 취미_ 좀 이상한 고양이 짤 모으기"), #imageLiteral(resourceName: "_ 복사본"), #imageLiteral(resourceName: "_ 1"), #imageLiteral(resourceName: "_ (3)"), #imageLiteral(resourceName: "Follow_ @elegant_ee 1")]
-    let appDelegate = UIApplication.shared.delegate as? AppDelegate
-    lazy var context = appDelegate?.persistentContainer.viewContext
-    var container: NSPersistentContainer!
-    var userModel: UserModel?
+    var viewModel = ProfileViewModel()
+    
     
     // MARK: - LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
         setupConstraint()
         setupCollectionView()
-        loadUser()
-        setupUser()
+        viewModel.loadUser()
         
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        self.viewModel.onCompleted = { [weak self] user in
+            DispatchQueue.main.async {
+                self?.userId.text = self?.viewModel.userModel?.id
+                self?.userName.text = self?.viewModel.userModel?.name
+                self?.userIntroduction.text = self?.viewModel.userModel?.introduction
+                self?.userAddress.text = self?.viewModel.userModel?.address
+            }
+        }
+        
         
     }
+    
+    
+    // MARK: - Func
     
     func setupUI(){
         view.backgroundColor = .systemBackground
@@ -307,7 +295,6 @@ class ProfileDesignViewController: UIViewController {
     
     
     func setupConstraint(){
-        
         NSLayoutConstraint.activate([
             userId.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             userId.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -369,7 +356,7 @@ class ProfileDesignViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "cellID")
     }
-
+    
     
     @objc func backButtonTapped() {
         self.dismiss(animated: true, completion: nil)
@@ -378,11 +365,11 @@ class ProfileDesignViewController: UIViewController {
     
     @objc func profileButtonTapped() {
         let destinationVC = ProfileViewController()
-        let managedObjectContext = self.context
+        
+        let managedObjectContext = self.viewModel.context
         destinationVC.context = managedObjectContext
-        destinationVC.container = container
-        destinationVC.userModel = userModel
-        print(userModel)
+        destinationVC.container = viewModel.container
+        destinationVC.userModel = viewModel.userModel
         
         destinationVC.dataChangedHandler = { [weak self] (newUser: UserModel) in
             self?.userId.text = newUser.id
@@ -402,50 +389,7 @@ class ProfileDesignViewController: UIViewController {
     }
     
     
-    func loadUser() {
-          let request: NSFetchRequest<UserModel> = UserModel.fetchRequest()
-          do {
-              let fetchedUserModels = try context?.fetch(request)
-              if let user = fetchedUserModels?.first {
-                  userModel = user
-                  setupUser()
-              }
-          } catch {
-              print("Error fetching data from context \(error)")
-          }
-      }
-
-    
-    func saveUser() {
-           if let context = context {
-                   userModel = UserModel(context: context)
-                   userModel?.id = "2__hansol"
-                   userModel?.name = "한솔"
-                   userModel?.introduction = "ios Developer 🍎"
-                   userModel?.address = "https://velog.io/@ho20128"
-               }
-
-               do {
-                   try context?.save()
-                   print("User saved successfully.")
-               } catch {
-                   print("Error saving user: \(error)")
-               }
-           }
-    
-    
-    func setupUser(){
-            userId.text = userModel?.id
-            userName.text = userModel?.name
-        userIntroduction.text = userModel?.introduction
-            userAddress.text = userModel?.address
-        }
-    
-    
-       }
-
-    
-    
+}
 
 
 
@@ -487,5 +431,26 @@ extension ProfileDesignViewController: UICollectionViewDelegateFlowLayout {
         return size
     }
     
+}
+
+
+
+// MARK: - Preview
+
+struct ViewControllerRepresentable: UIViewControllerRepresentable {
+    
+    func makeUIViewController(context: Context) -> ProfileDesignViewController {
+        return ProfileDesignViewController()
+    }
+    
+    func updateUIViewController(_ uiViewController: ProfileDesignViewController, context: Context) {
+    }
+}
+
+@available(iOS 13.0.0, *)
+struct ViewPreview: PreviewProvider {
+    static var previews: some View {
+        ViewControllerRepresentable()
+    }
 }
 

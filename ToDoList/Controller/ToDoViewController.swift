@@ -8,7 +8,9 @@
 import UIKit
 
 class ToDoViewController: UIViewController {
+    
     @IBOutlet weak var todoTableView: UITableView!
+    
     let pickerFrame = UIPickerView(frame: CGRect(x: 5, y: 20, width: 250, height: 140))
     var funcModel = FuncModel()
     var selectedSection = 0

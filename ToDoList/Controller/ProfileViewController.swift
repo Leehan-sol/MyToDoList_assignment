@@ -45,7 +45,7 @@ class ProfileViewController: UIViewController {
     
     lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "name"
+        label.text = "Name"
         label.font = UIFont.boldSystemFont(ofSize: 18)
         return label
     }()
@@ -144,8 +144,8 @@ class ProfileViewController: UIViewController {
         backButton.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         saveButton.translatesAutoresizingMaskIntoConstraints = false
-        
     }
+    
     
     func setupConstraint(){
         
@@ -171,7 +171,6 @@ class ProfileViewController: UIViewController {
         addressTextField.delegate = self
         
         if let userModel = userModel {
-
             idTextField.text = userModel.id ?? ""
             nameTextField.text = userModel.name ?? ""
             introductionTextField.text = userModel.introduction ?? ""
@@ -217,9 +216,7 @@ class ProfileViewController: UIViewController {
         } catch {
             print("Error saving context \(error)")
         }
-        
     }
-    
     
 }
 
