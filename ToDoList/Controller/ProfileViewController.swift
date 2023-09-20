@@ -10,12 +10,10 @@ import CoreData
 
 
 class ProfileViewController: UIViewController {
-    let appDelegate = UIApplication.shared.delegate as? AppDelegate
-    lazy var context = appDelegate?.persistentContainer.viewContext
-    var container: NSPersistentContainer!
-    
-    var dataChangedHandler: ((UserModel) -> Void)?
-    var userModel: UserModel?
+
+    var viewModel: ProfileEditViewModel!
+
+    // MARK: - Property
     
     lazy var backButton: UIButton = {
         let btn = UIButton()
@@ -119,20 +117,21 @@ class ProfileViewController: UIViewController {
         return btn
     }()
     
-    
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraint()
+        setupDelegate()
         setupTextField()
         
     }
     
-    
     deinit {
-        print("Profile EditVC 해제")
+        print("ProfileEditVC 해제")
     }
     
+    // MARK: - Function
     
     func setupUI(){
         view.backgroundColor = .systemBackground
@@ -148,7 +147,6 @@ class ProfileViewController: UIViewController {
     
     
     func setupConstraint(){
-        
         NSLayoutConstraint.activate([
             backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
             backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
@@ -161,16 +159,17 @@ class ProfileViewController: UIViewController {
             saveButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 70),
             saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-        
     }
     
-    func setupTextField() {
+    func setupDelegate(){
         idTextField.delegate = self
         nameTextField.delegate = self
         introductionTextField.delegate = self
         addressTextField.delegate = self
-        
-        if let userModel = userModel {
+    }
+    
+    func setupTextField(){
+        if let userModel = viewModel.userModel {
             idTextField.text = userModel.id ?? ""
             nameTextField.text = userModel.name ?? ""
             introductionTextField.text = userModel.introduction ?? ""
@@ -184,10 +183,9 @@ class ProfileViewController: UIViewController {
         
     }
     
-    
     @objc func saveButtonTapped() {
-        if let userModel = userModel {
-            saveUser()
+        if let userModel = viewModel.userModel {
+            viewModel.saveUser()
             if let id = idTextField.text {
                 userModel.id = id
             }
@@ -201,21 +199,10 @@ class ProfileViewController: UIViewController {
                 userModel.address = address
             }
             
-            dataChangedHandler?(userModel)
+            viewModel.dataChangedHandler?(userModel)
         }
         
         self.dismiss(animated: true, completion: nil)
-    }
-    
-    
-    func saveUser(){
-        print(#function)
-        do {
-            try appDelegate?.saveContext()
-            print("Success saving data")
-        } catch {
-            print("Error saving context \(error)")
-        }
     }
     
 }

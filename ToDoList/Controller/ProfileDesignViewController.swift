@@ -257,8 +257,11 @@ class ProfileDesignViewController: UIViewController {
                 self?.userAddress.text = self?.viewModel.userModel?.address
             }
         }
-        
-        
+    }
+    
+    
+    deinit {
+        print("ProfileDesignVC 해제")
     }
     
     
@@ -364,14 +367,16 @@ class ProfileDesignViewController: UIViewController {
     }
     
     @objc func profileButtonTapped() {
-        let destinationVC = ProfileViewController()
+        let editVC = ProfileViewController()
+        let editVM = ProfileEditViewModel()
+        editVC.viewModel = editVM
         
         let managedObjectContext = self.viewModel.context
-        destinationVC.context = managedObjectContext
-        destinationVC.container = viewModel.container
-        destinationVC.userModel = viewModel.userModel
+        editVM.context = managedObjectContext
+        editVM.container = viewModel.container
+        editVM.userModel = viewModel.userModel
         
-        destinationVC.dataChangedHandler = { [weak self] (newUser: UserModel) in
+        editVM.dataChangedHandler = { [weak self] (newUser: UserModel) in
             self?.userId.text = newUser.id
             self?.userName.text = newUser.name
             self?.userIntroduction.text = newUser.introduction
@@ -384,8 +389,8 @@ class ProfileDesignViewController: UIViewController {
             }
         }
         
-        destinationVC.modalPresentationStyle = .fullScreen
-        self.present(destinationVC, animated: true, completion: nil)
+        editVC.modalPresentationStyle = .fullScreen
+        self.present(editVC, animated: true, completion: nil)
     }
     
     
