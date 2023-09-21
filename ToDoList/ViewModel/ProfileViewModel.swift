@@ -9,9 +9,11 @@ import Foundation
 
 class ProfileViewModel {
     
-    let coreDataManager = CoreDataManager()
+    var coreDataManager: CoreDataService 
     var userModel: UserModel?
 
+    init(coreDataManager: CoreDataService){
+        self.coreDataManager = coreDataManager
+    }
 
-    
 }

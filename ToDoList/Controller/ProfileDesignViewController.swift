@@ -236,12 +236,15 @@ class ProfileDesignViewController: UIViewController {
     // MARK: - Variable
     
     let catPhotos: [UIImage] = [#imageLiteral(resourceName: "のせ猫『節黒仙翁』"), #imageLiteral(resourceName: "3b44bb8c-eab7-408c-9a46-54537cc03f97"), #imageLiteral(resourceName: "해연갤 - 붕붕이 취미_ 좀 이상한 고양이 짤 모으기 (1)"), #imageLiteral(resourceName: "Try to be an avocado today 🥑"), #imageLiteral(resourceName: "Zey"), #imageLiteral(resourceName: "e377cf34-3484-4148-af24-d199654385f3"), #imageLiteral(resourceName: "The Pastel-Hued World Of Instagram Artist Michele Bisaillon - IGNANT"), #imageLiteral(resourceName: "해연갤 - 붕붕이 취미_ 좀 이상한 고양이 짤 모으기"), #imageLiteral(resourceName: "_ 복사본"), #imageLiteral(resourceName: "_ 1"), #imageLiteral(resourceName: "_ (3)"), #imageLiteral(resourceName: "Follow_ @elegant_ee 1")]
-    var viewModel = ProfileViewModel()
+    var coreDataManager = CoreDataManager()
+    var viewModel: ProfileViewModel!
+    
     
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.viewModel = ProfileViewModel(coreDataManager: coreDataManager)
         
         setupUI()
         setupConstraint()
@@ -369,7 +372,7 @@ class ProfileDesignViewController: UIViewController {
         let editVC = ProfileEditViewController()
         let editVM = ProfileEditViewModel()
         editVC.viewModel = editVM
-        editVM.userModel = viewModel.coreDataManager.userModel
+        editVM.userModel = self.viewModel.coreDataManager.userModel
         
         let managedObjectContext = self.viewModel.coreDataManager.context
         

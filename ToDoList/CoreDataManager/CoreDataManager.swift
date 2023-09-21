@@ -8,16 +8,26 @@
 import UIKit
 import CoreData
 
+// MARK: - Protocol
 protocol CoreDataService {
+    var context: NSManagedObjectContext? { get set }
+    var userModel: UserModel? { get set }
+    var userModelUpdated: (UserModel?) -> Void { get set }
     func loadUser()
     func saveUser()
     
 }
 
-class CoreDataManager {
+
+// MARK: - CoreDataService
+
+class CoreDataManager: CoreDataService {
+   
+    
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
     lazy var context = appDelegate?.persistentContainer.viewContext
     var container: NSPersistentContainer!
+    
     
     var userModel: UserModel? {
         didSet {
