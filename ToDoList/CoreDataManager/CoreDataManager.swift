@@ -22,12 +22,10 @@ protocol CoreDataService {
 // MARK: - CoreDataService
 
 class CoreDataManager: CoreDataService {
-   
     
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
     lazy var context = appDelegate?.persistentContainer.viewContext
     var container: NSPersistentContainer!
-    
     
     var userModel: UserModel? {
         didSet {
@@ -37,6 +35,7 @@ class CoreDataManager: CoreDataService {
     
     var userModelUpdated: (UserModel?) -> Void = { user in }
     
+    
     func loadUser() {
         print(#function)
         context?.perform {
@@ -45,22 +44,23 @@ class CoreDataManager: CoreDataService {
                 let fetchedUserModels = try self.context?.fetch(request)
                 if let user = fetchedUserModels?.first {
                     self.userModel = user
-                    print(user)
                 }
             } catch {
                 print("Error fetching data from context \(error)")
             }
         }
     }
-    
-    
+
+        
     func saveUser() {
-        if let context = context {
-            userModel = UserModel(context: context)
-            userModel?.id = "2__hansol"
-            userModel?.name = "한솔"
-            userModel?.introduction = "ios Developer 🍎"
-            userModel?.address = "https://velog.io/@ho20128"
+        if userModel == nil {
+            if let context = context {
+                userModel = UserModel(context: context)
+                userModel?.id = "2__hansol"
+                userModel?.name = "한솔"
+                userModel?.introduction = "ios Developer 🍎"
+                userModel?.address = "https://velog.io/@ho20128"
+            }
         }
         
         do {
