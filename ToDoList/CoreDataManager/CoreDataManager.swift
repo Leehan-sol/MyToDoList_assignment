@@ -35,7 +35,6 @@ class CoreDataManager: CoreDataService {
     
     var userModelUpdated: (UserModel?) -> Void = { user in }
     
-    
     func loadUser() {
         print(#function)
         context?.perform {
@@ -44,34 +43,29 @@ class CoreDataManager: CoreDataService {
                 let fetchedUserModels = try self.context?.fetch(request)
                 if let user = fetchedUserModels?.first {
                     self.userModel = user
+                } else {
+                    self.userModel = UserModel(context: self.context!)
+                    self.userModel?.id = "2__hansol"
+                    self.userModel?.name = "한솔"
+                    self.userModel?.introduction = "ios Developer 🍎"
+                    self.userModel?.address = "https://velog.io/@ho20128"
                 }
             } catch {
                 print("Error fetching data from context \(error)")
             }
         }
     }
-
-        
+    
     func saveUser() {
-        if userModel == nil {
-            if let context = context {
-                userModel = UserModel(context: context)
-                userModel?.id = "2__hansol"
-                userModel?.name = "한솔"
-                userModel?.introduction = "ios Developer 🍎"
-                userModel?.address = "https://velog.io/@ho20128"
+        if let context = context {
+            do {
+                try context.save()
+                loadUser()
+                print("User saved successfully.")
+            } catch {
+                print("Error saving user: \(error)")
             }
         }
-        
-        do {
-            try context?.save()
-            loadUser()
-            print("User saved successfully.")
-        } catch {
-            print("Error saving user: \(error)")
-        }
     }
-    
-    
     
 }

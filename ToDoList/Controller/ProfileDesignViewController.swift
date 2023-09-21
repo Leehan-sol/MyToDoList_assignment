@@ -249,7 +249,6 @@ class ProfileDesignViewController: UIViewController {
         setupUI()
         setupConstraint()
         setupCollectionView()
-        viewModel.coreDataManager.saveUser()
         viewModel.coreDataManager.loadUser()
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
