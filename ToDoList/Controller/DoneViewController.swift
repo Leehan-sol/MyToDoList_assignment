@@ -19,6 +19,10 @@ class DoneViewController: UIViewController {
         
         funcModel.findDoneList()
     }
+    
+    deinit {
+        print("DoneVC 해제")
+    }
 }
 
 

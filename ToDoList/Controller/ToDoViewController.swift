@@ -29,6 +29,10 @@ class ToDoViewController: UIViewController {
         
     }
     
+    deinit {
+        print("ToDoVC 해제")
+    }
+    
     
     
     //MARK: -addButton Alert

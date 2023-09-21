@@ -1,5 +1,5 @@
 //
-//  ProfileViewController.swift
+//  ProfileEditViewController.swift
 //  ToDoList
 //
 //  Created by t2023-m0048 on 2023/09/18.
@@ -9,10 +9,8 @@ import UIKit
 import CoreData
 
 
-class ProfileViewController: UIViewController {
-
-    var viewModel: ProfileEditViewModel!
-
+class ProfileEditViewController: UIViewController {
+    
     // MARK: - Property
     
     lazy var backButton: UIButton = {
@@ -117,6 +115,11 @@ class ProfileViewController: UIViewController {
         return btn
     }()
     
+    // MARK: - Variable
+
+    var viewModel = ProfileEditViewModel()
+    
+    
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,7 +127,6 @@ class ProfileViewController: UIViewController {
         setupConstraint()
         setupDelegate()
         setupTextField()
-        
     }
     
     deinit {
@@ -184,8 +186,8 @@ class ProfileViewController: UIViewController {
     }
     
     @objc func saveButtonTapped() {
-        if let userModel = viewModel.userModel {
-            viewModel.saveUser()
+        if let userModel = self.viewModel.userModel {
+            viewModel.coreDataManager.saveUser()
             if let id = idTextField.text {
                 userModel.id = id
             }
@@ -198,10 +200,9 @@ class ProfileViewController: UIViewController {
             if let address = addressTextField.text {
                 userModel.address = address
             }
-            
-            viewModel.dataChangedHandler?(userModel)
+            print(userModel)
+            viewModel.userModelUpdated?(userModel)
         }
-        
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -209,7 +210,7 @@ class ProfileViewController: UIViewController {
 
 
 // MARK: - UITextFieldDelegate
-extension ProfileViewController: UITextFieldDelegate {
+extension ProfileEditViewController: UITextFieldDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)

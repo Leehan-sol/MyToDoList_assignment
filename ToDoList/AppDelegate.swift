@@ -52,6 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return container
     }()
     
+    
     // MARK: - Core Data Saving support
     func saveContext () {
            let context = persistentContainer.viewContext
@@ -59,7 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                do {
                    try context.save()
                } catch {
-         
                    let nserror = error as NSError
                    fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
                }

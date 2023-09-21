@@ -14,18 +14,24 @@ class PhotoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         if let imageURL = URL(string: "https://teamsparta.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F6b77bb10-f505-4dec-b9be-8a741d0e7241%2FUntitled.png?table=block&id=3e12ad08-5b8e-4dd6-91dc-38fe272c1afc&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=580&userId=&cache=v2") {
-                    AF.request(imageURL).responseImage { response in
-                        switch response.result {
-                        case .success(let image):
-                            // 다운로드 및 성공적으로 이미지를 얻었을 때
-                            self.image.image = image
-                        case .failure(let error):
-                            // 이미지 다운로드 실패 시 에러 처리
-                            print("Image download error: \(error)")
-                        }
-                    }
+            AF.request(imageURL).responseImage { response in
+                switch response.result {
+                case .success(let image):
+                    self.image.image = image
+                case .failure(let error):
+                    print("Image download error: \(error)")
                 }
             }
         }
+    }
+    
+    
+    
+    deinit {
+        print("PhotoVC 해제")
+    }
+    
+    
+}

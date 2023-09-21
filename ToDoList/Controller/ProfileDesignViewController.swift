@@ -233,11 +233,10 @@ class ProfileDesignViewController: UIViewController {
     }()
     
     
-    // MARK: - variable
+    // MARK: - Variable
     
     let catPhotos: [UIImage] = [#imageLiteral(resourceName: "のせ猫『節黒仙翁』"), #imageLiteral(resourceName: "3b44bb8c-eab7-408c-9a46-54537cc03f97"), #imageLiteral(resourceName: "해연갤 - 붕붕이 취미_ 좀 이상한 고양이 짤 모으기 (1)"), #imageLiteral(resourceName: "Try to be an avocado today 🥑"), #imageLiteral(resourceName: "Zey"), #imageLiteral(resourceName: "e377cf34-3484-4148-af24-d199654385f3"), #imageLiteral(resourceName: "The Pastel-Hued World Of Instagram Artist Michele Bisaillon - IGNANT"), #imageLiteral(resourceName: "해연갤 - 붕붕이 취미_ 좀 이상한 고양이 짤 모으기"), #imageLiteral(resourceName: "_ 복사본"), #imageLiteral(resourceName: "_ 1"), #imageLiteral(resourceName: "_ (3)"), #imageLiteral(resourceName: "Follow_ @elegant_ee 1")]
     var viewModel = ProfileViewModel()
-    
     
     // MARK: - LifeCycle
     
@@ -247,14 +246,14 @@ class ProfileDesignViewController: UIViewController {
         setupUI()
         setupConstraint()
         setupCollectionView()
-        viewModel.loadUser()
+        viewModel.coreDataManager.loadUser()
         
-        self.viewModel.onCompleted = { [weak self] user in
+        self.viewModel.coreDataManager.userModelUpdated = { [weak self] user in
             DispatchQueue.main.async {
-                self?.userId.text = self?.viewModel.userModel?.id
-                self?.userName.text = self?.viewModel.userModel?.name
-                self?.userIntroduction.text = self?.viewModel.userModel?.introduction
-                self?.userAddress.text = self?.viewModel.userModel?.address
+                self?.userId.text = user?.id
+                self?.userName.text = user?.name
+                self?.userIntroduction.text = user?.introduction
+                self?.userAddress.text = user?.address
             }
         }
     }
@@ -367,16 +366,14 @@ class ProfileDesignViewController: UIViewController {
     }
     
     @objc func profileButtonTapped() {
-        let editVC = ProfileViewController()
+        let editVC = ProfileEditViewController()
         let editVM = ProfileEditViewModel()
         editVC.viewModel = editVM
+        editVM.userModel = viewModel.coreDataManager.userModel
         
-        let managedObjectContext = self.viewModel.context
-        editVM.context = managedObjectContext
-        editVM.container = viewModel.container
-        editVM.userModel = viewModel.userModel
+        let managedObjectContext = self.viewModel.coreDataManager.context
         
-        editVM.dataChangedHandler = { [weak self] (newUser: UserModel) in
+        editVM.userModelUpdated = { [weak self] (newUser: UserModel) in
             self?.userId.text = newUser.id
             self?.userName.text = newUser.name
             self?.userIntroduction.text = newUser.introduction
@@ -416,7 +413,7 @@ extension ProfileDesignViewController: UICollectionViewDataSource {
 }
 
 
-// MARK: -UICollectionViewDelegateFlowLayout
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension ProfileDesignViewController: UICollectionViewDelegateFlowLayout {
     
