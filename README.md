@@ -11,10 +11,11 @@
 3. `URL Session`을 사용해서 홈 화면에 URL로 되어 있는 외부 `API`호출, `JSON`데이터 Parsing 후 랜덤 고양이 사진 보여주기
 <br/>(Placeholder 이미지(스켈레톤 UI) 구현)
 4. `App Icon`, `Launch Screen` 설정
+5. `Core Data`를 사용해서 user Profile 정보 저장
 
 <br/>
 
-# ✅  앱 구성
+# ✅  Todo Page 구성
 <img width="648" alt="image" src="https://github.com/Leehan-sol/swift_ToDoList/assets/139109343/15f41341-39b8-4905-bb70-8828e9cd466a">
 <br/>
 <br/>
@@ -28,6 +29,8 @@ User의 Interaction에 따라 데이터를 표시하고 변경된 내용을 화�
 User의 Interaction에 따라 Controller는 Model을 통해서 데이터를 가져와 그 정보를 바탕으로 View를 제어해서 User에게 전달<br/>
 
 <img width="309" alt="image" src="https://github.com/Leehan-sol/swift_MyToDoList_assignment/assets/139109343/1767eb07-780e-4660-9af9-f9075374737a">
+
+# ✅ Profile Page 구성
 
 <br/>
 
