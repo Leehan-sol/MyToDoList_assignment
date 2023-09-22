@@ -60,6 +60,7 @@ User의 Interaction에 따라 ViewModel은 Model을 통해서 데이터를 가�
 <br/>
 
 # 🛠️ UserDefaults와 CoreData의 차이점
+
 - UserDefaults: 데이터 저장을 위한 가장 기초적인 방법이다.
 1. 싱글턴 객체이다.
 2. Key-Value 쌍으로 데이터를 저장하는 방식이다.
@@ -71,13 +72,16 @@ CoreData와 Realm은 Thread-Safe 하지 않기 때문에 멀티 스레드 환경
 > 💡 종합하면 간단한 소규모 데이터를 쉽게 저장하고 싶을 때 UserDefaults를 사용하는 것이 좋다. <br/>
 만약 데이터가 앱이 삭제되도 남아있어야 하거나, 보안이 중요하다면 UserDefaults는 적합하지 않다.
 <br/>
-- CoreData : 데이터베이스 기능을 지원하는 프레임워크이다.
-공식 문서에서 CoreData의 5가지 기능을 볼 수 있는데요.
+
+- CoreData : 데이터베이스 기능을 지원하는 프레임워크이다. <br/>
+공식 문서에서 CoreData의 5가지 기능 <br/>
+
 1. 영속성(Persistence)
 2. 변경사항의 Undo, Redo
 3. 백그라운드 데이터 작업 기능
 4. 동기화 기능
 5. 버전 관리 및 마이그레이션(Migration)
+
 이 중 데이터베이스는 1번 영속성 기능이다. 이 영속성 기능은 SQLite를 기반으로 지원하는데 일반적인 데이터베이스와는 차이가 있다. <br/>
 CoreData는 객체 그래프 관리자로, 객체를 직접적으로 연결해서 관리합니다. <br/>
 데이터베이스는 행렬 관계를 이용해 데이터를 읽고 쓰는 반면 CoreData는 객체를 연속적으로 탐색해야 한다는 점이 차이점입니다. <br/>
