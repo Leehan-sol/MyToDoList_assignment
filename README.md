@@ -41,12 +41,12 @@ User의 Interaction에 따라 Controller는 Model을 통해서 데이터를 가�
 
 `View` : UI 담당<br/>
 User의 Interaction에 따라 데이터를 표시하고 변경된 내용을 화면에 반영<br/>
-* ViewModel을 참조하도록 설계
+> ViewModel을 참조하도록 설계
 
 `ViewModel` : Model과 View사이의 인터페이스 역할<br/>
 User의 Interaction에 따라 ViewModel은 Model을 통해서 데이터를 가져와 그 정보를 바탕으로 View를 제어해서 User에게 전달<br/>
-* Model을 참조하도록 설계<br/>
-* UIKit 프레임워크, View를 참조하지않도록 설계<br/>
+> Model을 참조하도록 설계<br/>
+> UIKit 프레임워크, View를 참조하지않도록 설계<br/>
   
 `MVVM`의 장점<br/>
 1. MVVM은 View 로직과 비즈니스 로직을 분리할 수 있어 생산성이 높다.<br/>
