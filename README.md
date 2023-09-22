@@ -33,7 +33,8 @@ User의 Interaction에 따라 Controller는 Model을 통해서 데이터를 가�
 <br/>
 
 # ✅ Profile Page 구성
-다이어그램 이미지 첨부 예정
+<img width="648" alt="image" src="https://github.com/Leehan-sol/MyToDoList_assignment/assets/139109343/abce4ab0-6a74-4e28-a7e5-51e4951ad789">
+
 <br/>
 <br/>
 
@@ -47,12 +48,12 @@ User의 Interaction에 따라 데이터를 표시하고 변경된 내용을 화�
 User의 Interaction에 따라 ViewModel은 Model을 통해서 데이터를 가져와 그 정보를 바탕으로 View를 제어해서 User에게 전달<br/>
 > Model을 참조하도록 설계<br/>
 > UIKit 프레임워크, View를 참조하지않도록 설계<br/>
-  
-- `MVVM`의 장점<br/>
+
+`MVVM`의 장점<br/>
 1. MVVM은 View 로직과 비즈니스 로직을 분리할 수 있어 생산성이 높다.<br/>
 2. 의존성이 없기 때문에 테스트가 수월해지고 View와 ViewModel이 1:N 관계이므로 중복되는 로직을 모듈화해서 여러 View에 재사용할 수도 있다.<br/>
 
-- `MVVM`의 단점<br/>
+`MVVM`의 단점<br/>
 1. MVVM은 MVC에 비해 설계가 복잡하므로 간단한 프로젝트는 오히려 MVC보다 생산성이 떨어질 수 있다.<br/>
 
 <br/>
