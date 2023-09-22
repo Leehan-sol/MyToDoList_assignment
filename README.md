@@ -11,7 +11,7 @@
 3. `URL Session`을 사용해서 홈 화면에 URL로 되어 있는 외부 `API`호출, `JSON`데이터 Parsing 후 랜덤 고양이 사진 보여주기
 <br/>(Placeholder 이미지(스켈레톤 UI) 구현)
 4. `App Icon`, `Launch Screen` 설정
-6. `Core Data`를 사용해서 user Profile 정보 저장
+6. `Core Data`를 사용해서 `User Profile` 정보 저장
 
 <br/>
 
@@ -30,7 +30,30 @@ User의 Interaction에 따라 Controller는 Model을 통해서 데이터를 가�
 
 <img width="309" alt="image" src="https://github.com/Leehan-sol/swift_MyToDoList_assignment/assets/139109343/1767eb07-780e-4660-9af9-f9075374737a">
 
+<br/>
+
 # ✅ Profile Page 구성
+다이어그램 이미지 첨부 예정
+<br/>
+<br/>
+
+`Model` : 데이터 구조를 정의<br/>
+
+`View` : UI 담당<br/>
+User의 Interaction에 따라 데이터를 표시하고 변경된 내용을 화면에 반영<br/>
+* ViewModel을 참조하도록 설계
+
+`ViewModel` : Model과 View사이의 인터페이스 역할<br/>
+User의 Interaction에 따라 ViewModel은 Model을 통해서 데이터를 가져와 그 정보를 바탕으로 View를 제어해서 User에게 전달<br/>
+* Model을 참조하도록 설계<br/>
+* UIKit 프레임워크, View를 참조하지않도록 설계<br/>
+  
+`MVVM`의 장점<br/>
+1. MVVM은 View 로직과 비즈니스 로직을 분리할 수 있어 생산성이 높다.<br/>
+2. 의존성이 없기 때문에 테스트가 수월해지고 View와 ViewModel이 1:N 관계이므로 중복되는 로직을 모듈화해서 여러 View에 재사용할 수도 있다.<br/>
+
+`MVVM`의 단점<br/>
+1. MVVM은 MVC에 비해 설계가 복잡하므로 간단한 프로젝트는 오히려 MVC보다 생산성이 떨어질 수 있다.<br/>
 
 <br/>
 
