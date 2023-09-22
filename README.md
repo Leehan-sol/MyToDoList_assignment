@@ -15,7 +15,7 @@
 
 <br/>
 
-# ✅  Todo Page 구성
+# ✅  ToDo Page 구성
 <img width="648" alt="image" src="https://github.com/Leehan-sol/swift_ToDoList/assets/139109343/15f41341-39b8-4905-bb70-8828e9cd466a">
 <br/>
 <br/>
@@ -48,11 +48,11 @@ User의 Interaction에 따라 ViewModel은 Model을 통해서 데이터를 가�
 > Model을 참조하도록 설계<br/>
 > UIKit 프레임워크, View를 참조하지않도록 설계<br/>
   
-`MVVM`의 장점<br/>
+- `MVVM`의 장점<br/>
 1. MVVM은 View 로직과 비즈니스 로직을 분리할 수 있어 생산성이 높다.<br/>
 2. 의존성이 없기 때문에 테스트가 수월해지고 View와 ViewModel이 1:N 관계이므로 중복되는 로직을 모듈화해서 여러 View에 재사용할 수도 있다.<br/>
 
-`MVVM`의 단점<br/>
+- `MVVM`의 단점<br/>
 1. MVVM은 MVC에 비해 설계가 복잡하므로 간단한 프로젝트는 오히려 MVC보다 생산성이 떨어질 수 있다.<br/>
 
 <br/>
