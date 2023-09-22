@@ -1,6 +1,6 @@
 # 💡 SpartaCoding-Project-ToDoList
 
-메모앱(My Todo List) 만들기 + 네트워크와 데이터 저장
+메모앱(My Todo List) 만들기 + 네트워크와 데이터 저장 + 인스타 프로필 페이지 클론
 
 <br/>
 
@@ -11,7 +11,7 @@
 3. `URL Session`을 사용해서 홈 화면에 URL로 되어 있는 외부 `API`호출, `JSON`데이터 Parsing 후 랜덤 고양이 사진 보여주기
 <br/>(Placeholder 이미지(스켈레톤 UI) 구현)
 4. `App Icon`, `Launch Screen` 설정
-5. `Core Data`를 사용해서 user Profile 정보 저장
+6. `Core Data`를 사용해서 user Profile 정보 저장
 
 <br/>
 
@@ -39,6 +39,8 @@ User의 Interaction에 따라 Controller는 Model을 통해서 데이터를 가�
 <img width="200" height="300" src="https://github.com/Leehan-sol/swift_ToDoList/assets/139109343/3af3c1c8-a555-4d96-9702-297c3fa2ef8d">
 <img width="200" height="300" src="https://github.com/Leehan-sol/swift_ToDoList/assets/139109343/38ced4e3-fb10-4537-b8e3-270f5995d715">
 <img width="200" height="300" src="https://github.com/Leehan-sol/swift_ToDoList/assets/139109343/c095342e-5c3b-4bf2-be1b-b4eed61c42e7">
+<img width="200" height="300" src="https://github.com/Leehan-sol/MyToDoList_assignment/assets/139109343/a186519e-25f8-4e5b-beb3-ebe6c071e061">
+<img width="200" height="300" src="https://github.com/Leehan-sol/MyToDoList_assignment/assets/139109343/6f2773d6-e289-4787-8385-f273174a0685">
 
 
 <br/>
