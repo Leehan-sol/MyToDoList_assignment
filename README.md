@@ -31,6 +31,7 @@ User의 Interaction에 따라 Controller는 Model을 통해서 데이터를 가�
 <img width="309" alt="image" src="https://github.com/Leehan-sol/swift_MyToDoList_assignment/assets/139109343/1767eb07-780e-4660-9af9-f9075374737a">
 
 <br/>
+<br/>
 
 # ✅ Profile Page 구성
 <img width="648" alt="image" src="https://github.com/Leehan-sol/MyToDoList_assignment/assets/139109343/abce4ab0-6a74-4e28-a7e5-51e4951ad789">
@@ -55,6 +56,14 @@ User의 Interaction에 따라 ViewModel은 Model을 통해서 데이터를 가�
 
 `MVVM`의 단점<br/>
 1. MVVM은 MVC에 비해 설계가 복잡하므로 간단한 프로젝트는 오히려 MVC보다 생산성이 떨어질 수 있다.<br/>
+
+<br/>
+
+# 🛠️ UserDefaults와 CoreData의 차이점
+
+
+
+
 
 <br/>
 
