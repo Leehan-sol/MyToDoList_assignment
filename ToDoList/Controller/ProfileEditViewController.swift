@@ -36,6 +36,7 @@ class ProfileEditViewController: UIViewController {
         tf.layer.borderWidth = 1
         tf.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         tf.leftViewMode = .always
+        tf.autocapitalizationType = .none
         return tf
     }()
     
@@ -54,6 +55,7 @@ class ProfileEditViewController: UIViewController {
         tf.layer.borderWidth = 1
         tf.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         tf.leftViewMode = .always
+        tf.autocapitalizationType = .none
         return tf
     }()
     
@@ -72,6 +74,7 @@ class ProfileEditViewController: UIViewController {
         tf.layer.borderWidth = 1
         tf.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         tf.leftViewMode = .always
+        tf.autocapitalizationType = .none
         return tf
     }()
     
@@ -91,6 +94,7 @@ class ProfileEditViewController: UIViewController {
         tf.textContentType = .emailAddress
         tf.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         tf.leftViewMode = .always
+        tf.autocapitalizationType = .none
         return tf
     }()
     
