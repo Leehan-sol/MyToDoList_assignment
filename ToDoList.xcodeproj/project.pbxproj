@@ -110,7 +110,6 @@
 				67EA88672ABBCD14006DB1A0 /* CoreDataManager */,
 				6735C77D2A9B09A20054FF2B /* Model */,
 				6735C77A2A9B097F0054FF2B /* View */,
-				6735C7792A9B096C0054FF2B /* Controller */,
 				674679E32ABABD910046EC01 /* ViewModel */,
 				6735C7682A9B05E60054FF2B /* Assets.xcassets */,
 				6735C76A2A9B05E60054FF2B /* LaunchScreen.storyboard */,
@@ -140,6 +139,7 @@
 				6735C77E2A9C7DBD0054FF2B /* DoneTableViewCell.swift */,
 				6784471C2AB7D384002F35F3 /* CollectionViewCell.swift */,
 				6765A67C2ABE6A66009CD88E /* ProfileDesignView.swift */,
+				6735C7792A9B096C0054FF2B /* Controller */,
 			);
 			path = View;
 			sourceTree = "<group>";
